@@ -1,7 +1,7 @@
 # COVID-19 Contact Visualizer: Python libraries we'll be using.
 
 # Loading from datasets
-csv
+csv~=1.0
 
 # Graphics and Visualization
 networkx
