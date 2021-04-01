@@ -42,6 +42,14 @@ class _Person:
         """
         return self._degrees_apart != -1
 
+    def get_degree(self):
+        """ Return smallest degree apart from an infected vertex. Raise ValueError if has not
+            been calculated yet.
+        """
+        if self.has_degree():
+            return self._degrees_apart
+        raise ValueError
+    
     def reset_degree(self):
         """ Resets the _degrees_apart attribute to -1 to represent an uncalculated value
         """
