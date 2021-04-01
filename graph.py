@@ -17,6 +17,36 @@ class _Person:
 
     _age: int
 
+    _degrees_apart: int  # Used for degree calculation; value is -1 if not calculated
+
+    # BASIC METHODS
+    #    TODO: put basic vertex methods here
+
+    # SIMULATION CALCULATION
+    #    TODO: put simulation vertex methods here
+
+    # DEGREE CALCULATION
+    def calculate_degrees_apart(self, curr_degree: int, visited: set) -> None:
+        """ Update the _degrees_apart for all of its neighbours.
+        """
+        if not self.has_degree() or curr_degree < self._degrees_apart:
+            self._degrees_apart = curr_degree
+
+        visited.add(self)
+        for person in self._neighbours:
+            if person not in visited:
+                person.calculate_degrees_apart(curr_degree + 1, visited.copy())
+
+    def has_degree(self):
+        """ Determine whether ar not the degree is calculated or not.
+        """
+        return self._degrees_apart != -1
+
+    def reset_degree(self):
+        """ Resets the _degrees_apart attribute to -1 to represent an uncalculated value
+        """
+        self._degrees_apart = -1
+
 
 @dataclass
 class Graph:
