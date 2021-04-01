@@ -1,3 +1,7 @@
+""" COVID-19 Contact Visualizer
+    Copyright Simon Chen, Patricia Ding, Salman Husainie, Makayla Duffus
+"""
+
 from __future__ import annotations
 from dataclasses import dataclass
 from typing import Dict, Any
@@ -22,6 +26,4 @@ class Graph:
 
 
 def load_graph_from_csv() -> Graph:
-
-
-
+    pass
