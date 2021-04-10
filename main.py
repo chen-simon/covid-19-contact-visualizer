@@ -5,5 +5,8 @@ import networkx
 from graph import Graph
 
 
-if __name__ == '__main__':
-    load
+def run() -> None:
+    """
+    This runs the program!
+    """
+    pass
