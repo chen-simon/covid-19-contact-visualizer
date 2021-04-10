@@ -9,6 +9,8 @@ from __future__ import annotations
 from typing import Dict, Optional
 import csv
 
+import networkx as nx
+
 
 class _Person:
     """A person who undergoes contact tracing. Represents a vertex in a graph.
@@ -168,6 +170,9 @@ class Graph:
         for person in self._people.values():
             person.reset_degree()  # Reset all degrees to None
 
+    def _graph_to_nx(self) -> nx.Graph:
+        """ Return a networkx Graph representing self."""
+        # TODO: Makayla's got this :)
 
 if __name__ == '__main__':
     import python_ta
