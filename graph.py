@@ -170,7 +170,7 @@ class Graph:
         for person in self._people.values():
             person.reset_degree()  # Reset all degrees to None
 
-    def _graph_to_nx(self) -> nx.Graph:
+    def to_nx(self) -> nx.Graph:
         """ Return a networkx Graph representing self."""
         graph_nx = nx.Graph()
         for p in self._people.values():
