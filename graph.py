@@ -3,7 +3,7 @@
 Graph Module
 This module contains the graph classes that store the contact tracing data.
 
-This file is Copyright (c) 2021 Simon Chen, Patricia Ding, Salman Husainie, Makayla Duffus
+This file is Copyright (c) 2021 Supreme Simon Chen, Patricia Ding, Salman Husainie, Makayla Duffus
 """
 from __future__ import annotations
 from typing import Dict, Optional
