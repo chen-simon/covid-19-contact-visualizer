@@ -17,9 +17,11 @@ def render_degrees_apart(graph: Graph, init_infected: set[str]) -> None:
     graph.set_infected(init_infected)
     graph.recalculate_degrees()
 
+    G = nx.Graph()
+    G.add_edge(1, 2)
     # Display
     networkx_graph = graph.to_nx()
-    nx.draw(networkx_graph)
+    nx.draw(networkx_graph, with_labels=True)
     plt.show()
 
 
