@@ -1,5 +1,5 @@
 import networkx as nx
-from graph import Graph
+from dataclasses import Graph
 from typing import Tuple
 import matplotlib.pyplot as plt
 
