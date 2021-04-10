@@ -6,4 +6,7 @@ from graph import Graph
 
 
 def run() -> None:
+    """
+    This runs the program!
+    """
     pass
