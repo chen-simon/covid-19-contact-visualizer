@@ -22,13 +22,14 @@ class _Person:
             - infected: True if the person has developed COVID-19, false otherwise.
             - neighbours: People in this person's social circle, and their corresponding level of
               contact with this person
-            - degrees_apart: The degree of separation between this person and an infected person in Degree Mode
+            - degrees_apart: The degree of separation between this person and an infected person in
+            Degree Mode
 
         Representation Invariants:
             - self not in self.neighbours
             - all(self in u.neighbours for u in self.neighbours)
             - self.age >= 0
-            - 1 <= self.severity_level <= 3
+            - 0 <= self.severity_level <= 1
     """
     identifier: str
     name: str
@@ -58,10 +59,11 @@ class _Person:
 
     # DEGREE CALCULATION
     def calculate_degrees_apart(self, curr_degree: int, visited: set) -> None:
-        """Update degrees_apart for all the people this person is connected to, where degrees_apart is the smallest
-        degree apart between this person and an infected person.
+        """Update degrees_apart for all the people this person is connected to, where degrees_apart
+        is the smallest degree apart between this person and an infected person.
         """
-        # This will ensure that degrees_apart is always calculating the smallest degree between an infected person.
+        # This will ensure that degrees_apart is always calculating the smallest degree between an
+        # infected person.
         if self.degrees_apart is None or curr_degree < self.degrees_apart:
             self.degrees_apart = curr_degree
 
@@ -131,7 +133,7 @@ class Graph:
         person2 = self._people[identifier2]
 
         return person1.neighbours.get(person2, 0)
-    
+
     @staticmethod
     def load_graph_csv(names_file: str, contact_file: str) -> Graph:
         """ Return a Graph from the corresponding names file and contacts file which are in .csv format.

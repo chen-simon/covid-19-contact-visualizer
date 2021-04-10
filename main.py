@@ -5,5 +5,5 @@ import networkx
 from graph import Graph
 
 
-def run() -> None:
-    pass
+if __name__ == '__main__':
+    load
