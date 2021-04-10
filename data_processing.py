@@ -40,21 +40,45 @@ def create_test_graph(n: int) -> Graph:
     """ Return a connected Graph containing n _Person objects.
 
     Preconditions:
-        - n >= 20
+        - n >= 5
     """
     graph = Graph()
+    people = []
 
     # Add vertices to graph
     for i in range(0, n):
-        id, name = generate_id_and_name()
+        _, name = generate_id_and_name()
         graph.add_vertex(identifier=str(i), name=name, age=random.randint(18, 55),
                          severity_level=random.uniform(0, 1))
+        people.append(str(i))
 
-        k = random.randint(0, i)
-        for j in range(0, k):
-            graph.add_edge(str(k), str(j), random.uniform(0, 1))
+    rand_list = random_list(people)
+
+    for r in range(len(people) - 1):  # [0,1,2,3,4,5] = people
+        # [1,2,3]
+        # [3,4,5]
+        # [1,5]
+        graph.add_edge(people[r], people[r+1], random.uniform(0, 1))
+
+
+        # k = random.randint(0, i)
+        # for j in range(0, k):
+            # graph.add_edge(str(k), str(j), random.uniform(0, 1))
 
     return graph
+
+
+def random_list(people: list) -> list:
+    """Return a randomly generated list of at  most len(people) // 2 integers
+        Preconditions:
+            - len(people) >= 5
+    """
+    new_list = []
+    num = random.randint(2, len(people) // 2)
+    for _ in range(0, num):
+        new_list.append(random.choice(people))
+
+    return new_list
 
 
 def generate_id_and_name() -> Tuple[str, str]:
