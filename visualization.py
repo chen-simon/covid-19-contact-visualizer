@@ -22,7 +22,7 @@ def render_degrees_apart(graph: Graph, init_infected: set[str]) -> None:
 
 def degrees_apart_get_colour(degrees_apart: int) -> Tuple[int, int, int]:
     """ Given a degrees_apart, return the appropriate colour of the person. The colour calculation
-    is a recpirocal function
+    is a reciprocal function
     """
     percent_fill = 1 / (degrees_apart + 1)
     return (int(INFECTED_COLOUR[0] * percent_fill),
