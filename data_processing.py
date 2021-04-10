@@ -50,7 +50,7 @@ def create_test_graph(n: int) -> Graph:
         graph.add_vertex(identifier=str(i), name=name, age=random.randint(18, 55),
                          severity_level=random.uniform(0, 1))
 
-        k = random.randint(0, n // 3)
+        k = random.randint(0, i)
         for j in range(0, k):
             graph.add_edge(str(k), str(j), random.uniform(0, 1))
 
