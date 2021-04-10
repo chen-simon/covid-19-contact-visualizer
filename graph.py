@@ -78,9 +78,14 @@ class _Person:
             return self.degrees_apart
         raise ValueError
 
-    def reset_degree(self) -> None:
-        """Resets the degrees_apart attribute to None to represent an uncalculated value."""
-        self.degrees_apart = None
+    def reset_degree(self, zero: Optional[bool] = False) -> None:
+        """Resets the degrees_apart attribute to None to represent an uncalculated value.
+        If zero is true, set it to 0 instead.
+        """
+        if zero:
+            self.degrees_apart = 0
+        else:
+            self.degrees_apart = None
 
 
 class Graph:
@@ -131,6 +136,34 @@ class Graph:
         person2 = self._people[identifier2]
 
         return person1.neighbours.get(person2, 0)
+
+    def set_infected(self, init_infected: set[str]) -> None:
+        """ Sets the initial infected people for the graph, given their ids
+        """
+        for identifier in init_infected:
+            self._people[identifier].infected = True
+
+    def recalculate_degrees(self) -> None:
+        """ Recalculates the degrees_apart attribute for each connected person to an infected.
+        """
+        self._reset_degrees()
+
+        infected_people = set()
+
+        for person in self._people.values():
+            if person.infected:
+                person.reset_degree(zero=True)
+                infected_people.add(person)
+
+        for infected_person in infected_people:
+            # This method calculates it for its neighbours
+            infected_person.calculate_degrees_apart(0, set())
+
+    def _reset_degrees(self) -> None:
+        """ Resets all degrees_apart attributes in graph to be None
+        """
+        for person in self._people.values():
+            person.reset_degree()  # Reset all degrees to None
 
 
 def load_graph_csv(names_file: str, contact_file: str) -> Graph:
