@@ -131,15 +131,15 @@ class Graph:
         person2 = self._people[identifier2]
 
         return person1.neighbours.get(person2, 0)
-    
-    @staticmethod
-    def load_graph_csv(names_file: str, contact_file: str) -> Graph:
-        """ Return a Graph from the corresponding names file and contacts file which are in .csv format.
-        """
-        # TODO: Implement this method
 
-    @staticmethod
-    def load_graph_json(names_file: str, contact_file: str) -> Graph:
-        """ Return a Graph from the corresponding names file and contacts file which are in .json format.
-        """
-        # TODO: Implement this method if we're feeling spicy
+
+def load_graph_csv(names_file: str, contact_file: str) -> Graph:
+    """ Return a Graph from the corresponding names file and contacts file which are in .csv format.
+    """
+    # TODO: Implement this method
+
+
+def load_graph_json(names_file: str, contact_file: str) -> Graph:
+    """ Return a Graph from the corresponding names file and contacts file which are in .json format.
+    """
+    # TODO: Implement this method if we're feeling spicy
