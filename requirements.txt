@@ -3,3 +3,4 @@
 # Graphics and Visualization
 networkx
 plotly
+matplotlib

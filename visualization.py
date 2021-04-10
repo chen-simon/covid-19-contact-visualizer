@@ -1,7 +1,7 @@
 import networkx as nx
-from plotly.graph_objs import Scatter, Figure
 from graph import Graph
 from typing import Tuple
+import matplotlib.pyplot as plt
 
 INFECTED_COLOUR = (255, 0, 0)
 
@@ -18,6 +18,9 @@ def render_degrees_apart(graph: Graph, init_infected: set[str]) -> None:
     graph.recalculate_degrees()
 
     # Display
+    networkx_graph = graph.to_nx()
+    nx.draw(networkx_graph)
+    plt.show()
 
 
 def degrees_apart_get_colour(degrees_apart: int) -> Tuple[int, int, int]:
