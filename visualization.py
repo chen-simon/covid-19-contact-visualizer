@@ -2,6 +2,7 @@ import networkx as nx
 from plotly.graph_objs import Scatter, Figure
 from graph import Graph
 
+INFECTED_COLOUR = 'rgb(255, 0, 0)'
 
 # Degrees visualization
 def render_degrees_apart(graph: Graph, init_infected: set[str]) -> None:
@@ -10,9 +11,11 @@ def render_degrees_apart(graph: Graph, init_infected: set[str]) -> None:
     Preconditions:
         - all(not person.infected for person in graph._people.values())
     """
+    # Degree calculation
     graph.set_infected(init_infected)
     graph.recalculate_degrees()
 
+    # Display
     graph_nx = graph.to_networkx(max_vertices)
 
     pos = getattr(nx, layout)(graph_nx)
@@ -56,4 +59,6 @@ def render_degrees_apart(graph: Graph, init_infected: set[str]) -> None:
     fig.update_layout({'showlegend': False})
     fig.update_xaxes(showgrid=False, zeroline=False, visible=False)
     fig.update_yaxes(showgrid=False, zeroline=False, visible=False)
+
+def rgb_to_str(rgb: )
 
