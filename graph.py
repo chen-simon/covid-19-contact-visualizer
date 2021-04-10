@@ -3,7 +3,7 @@
 Graph Module
 This module contains the graph classes that store the contact tracing data.
 
-This file is Copyright (c) 2021 Supreme Simon Chen, Patricia Ding, Salman Husainie, Makayla Duffus
+This file is Copyright (c) 2021 Simon Chen, Patricia Ding, Salman Husainie, Makayla Duffus
 """
 from __future__ import annotations
 from typing import Dict, Optional
@@ -81,9 +81,14 @@ class _Person:
             return self.degrees_apart
         raise ValueError
 
-    def reset_degree(self) -> None:
-        """Resets the degrees_apart attribute to None to represent an uncalculated value."""
-        self.degrees_apart = None
+    def reset_degree(self, zero: Optional[bool] = False) -> None:
+        """Resets the degrees_apart attribute to None to represent an uncalculated value.
+        If zero is true, set it to 0 instead.
+        """
+        if zero:
+            self.degrees_apart = 0
+        else:
+            self.degrees_apart = None
 
 
 class Graph:
@@ -135,31 +140,37 @@ class Graph:
 
         return person1.neighbours.get(person2, 0)
 
+    def set_infected(self, init_infected: set[str]) -> None:
+        """ Sets the initial infected people for the graph, given their ids
+        """
+        for identifier in init_infected:
+            self._people[identifier].infected = True
 
-def load_graph_csv(names_file: str, contact_file: str) -> Graph:
-    """ Return a Graph from the corresponding names file and contacts file which are in .csv format.
-    """
-    graph = Graph()
+    def recalculate_degrees(self) -> None:
+        """ Recalculates the degrees_apart attribute for each connected person to an infected.
+        """
+        self._reset_degrees()
 
-    with open(names_file) as f:
-        reader1 = csv.reader(f)
-        next(reader1)
+        infected_people = set()
 
-        for identifier, name, age, severity in reader1:
-            graph.add_vertex(identifier, name, int(age), float(severity))
+        for person in self._people.values():
+            if person.infected:
+                person.reset_degree(zero=True)
+                infected_people.add(person)
 
-    with open(contact_file) as f:
-        reader2 = csv.reader(f)
-        next(reader2)
+        for infected_person in infected_people:
+            # This method calculates it for its neighbours
+            infected_person.calculate_degrees_apart(0, set())
 
-        for id1, id2, weight in reader2:
-            graph.add_edge(id1, id2, float(weight))
+    def _reset_degrees(self) -> None:
+        """ Resets all degrees_apart attributes in graph to be None
+        """
+        for person in self._people.values():
+            person.reset_degree()  # Reset all degrees to None
 
-    return graph
 
-
-def load_graph_json(names_file: str, contact_file: str) -> Graph:
-    """ Return a Graph from the corresponding names file and contacts file which are in .json
-    format.
-    """
-    # TODO: Implement this method if we're feeling spicy
+if __name__ == '__main__':
+    import python_ta
+    python_ta.check_all(config={
+        'max-line-length': 100
+    })
