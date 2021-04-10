@@ -19,7 +19,7 @@ def render_degrees_apart(graph: Graph, init_infected: set[str]) -> None:
 
     # Display
     networkx_graph = graph.to_nx()
-    nx.draw(networkx_graph)
+    nx.draw(networkx_graph, with_labels=True)
     plt.show()
 
 
