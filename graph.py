@@ -23,11 +23,7 @@ class _Person:
             - neighbours: People in this person's social circle, and their corresponding level of
               contact with this person
             - degrees_apart: The degree of separation between this person and an infected person in
-<<<<<<< HEAD
             Degree Mode
-=======
-              Degree Mode
->>>>>>> 6a58e34ad113996e5b5d09efe30a32d0d57f5716
 
         Representation Invariants:
             - self not in self.neighbours
@@ -138,15 +134,6 @@ class Graph:
         person2 = self._people[identifier2]
 
         return person1.neighbours.get(person2, 0)
-<<<<<<< HEAD
-
-    @staticmethod
-    def load_graph_csv(names_file: str, contact_file: str) -> Graph:
-        """ Return a Graph from the corresponding names file and contacts file which are in .csv format.
-        """
-        # TODO: Implement this method
-=======
->>>>>>> 6a58e34ad113996e5b5d09efe30a32d0d57f5716
 
 
 def load_graph_csv(names_file: str, contact_file: str) -> Graph:

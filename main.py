@@ -4,9 +4,12 @@
 import networkx
 from graph import Graph
 
+if __name__ == '__main__':
+    # load graph
+    graph = data_processing.load_graph_csv('data/persons.csv', 'data/connections.csv')
 
-def run() -> None:
-    """
-    This runs the program!
-    """
-    pass
+    # output graph
+
+    # collect user input on infected person(s)
+
+    # run simulation
