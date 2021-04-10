@@ -143,14 +143,14 @@ def load_graph_csv(names_file: str, contact_file: str) -> Graph:
         next(reader1)
 
         for identifier, name, age, severity in reader1:
-            graph.add_vertex(identifier, name, age, severity)
+            graph.add_vertex(identifier, name, int(age), float(severity))
 
     with open(contact_file) as f:
         reader2 = csv.reader(f)
         next(reader2)
 
         for id1, id2, weight in reader2:
-            graph.add_edge(id1, id2, weight)
+            graph.add_edge(id1, id2, float(weight))
 
     return graph
 
