@@ -3,7 +3,7 @@
 Graph Module
 This module contains the graph classes that store the contact tracing data.
 
-This file is Copyright (c) 2021 Supreme Simon Chen, Patricia Ding, Salman Husainie, Makayla Duffus
+This file is Copyright (c) 2021 Simon Chen, Patricia Ding, Salman Husainie, Makayla Duffus
 """
 from __future__ import annotations
 from typing import Dict, Optional
@@ -169,30 +169,8 @@ class Graph:
             person.reset_degree()  # Reset all degrees to None
 
 
-def load_graph_csv(names_file: str, contact_file: str) -> Graph:
-    """ Return a Graph from the corresponding names file and contacts file which are in .csv format.
-    """
-    graph = Graph()
-
-    with open(names_file) as f:
-        reader1 = csv.reader(f)
-        next(reader1)
-
-        for identifier, name, age, severity in reader1:
-            graph.add_vertex(identifier, name, int(age), float(severity))
-
-    with open(contact_file) as f:
-        reader2 = csv.reader(f)
-        next(reader2)
-
-        for id1, id2, weight in reader2:
-            graph.add_edge(id1, id2, float(weight))
-
-    return graph
-
-
-def load_graph_json(names_file: str, contact_file: str) -> Graph:
-    """ Return a Graph from the corresponding names file and contacts file which are in .json
-    format.
-    """
-    # TODO: Implement this method if we're feeling spicy
+if __name__ == '__main__':
+    import python_ta
+    python_ta.check_all(config={
+        'max-line-length': 100
+    })
