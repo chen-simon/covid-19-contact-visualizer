@@ -1,8 +1,10 @@
 import networkx as nx
 from plotly.graph_objs import Scatter, Figure
 from graph import Graph
+from typing import Tuple
 
 INFECTED_COLOUR = 'rgb(255, 0, 0)'
+
 
 # Degrees visualization
 def render_degrees_apart(graph: Graph, init_infected: set[str]) -> None:
@@ -60,5 +62,6 @@ def render_degrees_apart(graph: Graph, init_infected: set[str]) -> None:
     fig.update_xaxes(showgrid=False, zeroline=False, visible=False)
     fig.update_yaxes(showgrid=False, zeroline=False, visible=False)
 
-def rgb_to_str(rgb: )
 
+def rgb_to_str(rgb: Tuple[int]) -> str:
+    return 'rgb({}, {}, {})'.format(rgb[0], rgb[1], rgb[2])
