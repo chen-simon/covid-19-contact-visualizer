@@ -3,7 +3,7 @@
 Graph Module
 This module contains the graph classes that store the contact tracing data.
 
-This file is Copyright (c) 2021 Simon Chen, Patricia Ding, Salman Husainie, Makayla Duffus
+This file is Copyright (c) 2021 Supreme Simon Chen, Patricia Ding, Salman Husainie, Makayla Duffus
 """
 from __future__ import annotations
 from typing import Dict, Optional
@@ -22,7 +22,8 @@ class _Person:
             - infected: True if the person has developed COVID-19, false otherwise.
             - neighbours: People in this person's social circle, and their corresponding level of
               contact with this person
-            - degrees_apart: The degree of separation between this person and an infected person in Degree Mode
+            - degrees_apart: The degree of separation between this person and an infected person in
+              Degree Mode
 
         Representation Invariants:
             - self not in self.neighbours
@@ -58,10 +59,12 @@ class _Person:
 
     # DEGREE CALCULATION
     def calculate_degrees_apart(self, curr_degree: int, visited: set) -> None:
-        """Update degrees_apart for all the people this person is connected to, where degrees_apart is the smallest
-        degree apart between this person and an infected person.
+        """Update degrees_apart for all the people this person is connected to,
+        where degrees_apart is the smallest degree apart between this person and an infected
+        person.
         """
-        # This will ensure that degrees_apart is always calculating the smallest degree between an infected person.
+        # This will ensure that degrees_apart is always calculating the smallest degree between
+        # an infected person.
         if self.degrees_apart is None or curr_degree < self.degrees_apart:
             self.degrees_apart = curr_degree
 
@@ -169,10 +172,27 @@ class Graph:
 def load_graph_csv(names_file: str, contact_file: str) -> Graph:
     """ Return a Graph from the corresponding names file and contacts file which are in .csv format.
     """
-    # TODO: Implement this method
+    graph = Graph()
+
+    with open(names_file) as f:
+        reader1 = csv.reader(f)
+        next(reader1)
+
+        for identifier, name, age, severity in reader1:
+            graph.add_vertex(identifier, name, int(age), float(severity))
+
+    with open(contact_file) as f:
+        reader2 = csv.reader(f)
+        next(reader2)
+
+        for id1, id2, weight in reader2:
+            graph.add_edge(id1, id2, float(weight))
+
+    return graph
 
 
 def load_graph_json(names_file: str, contact_file: str) -> Graph:
-    """ Return a Graph from the corresponding names file and contacts file which are in .json format.
+    """ Return a Graph from the corresponding names file and contacts file which are in .json
+    format.
     """
     # TODO: Implement this method if we're feeling spicy
