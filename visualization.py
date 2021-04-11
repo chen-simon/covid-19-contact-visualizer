@@ -1,8 +1,16 @@
-import math
+"""CSC111 Project: COVID-19 Contact Visualizer
 
+Module Description
+==================
+Visualization Module
+This module contains the functions used to create the COVID-19 contact visualization.
+
+Copyright and Usage Information
+===============================
+This file is Copyright (c) 2021 Simon Chen, Patricia Ding, Salman Husainie, Makayla Duffus
+"""
 import networkx as nx
 from dataclasses import Graph
-from typing import Tuple, Optional
 # import matplotlib.pyplot as plt
 from plotly.graph_objs import Scatter, Figure
 import data_processing

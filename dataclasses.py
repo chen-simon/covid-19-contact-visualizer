@@ -1,8 +1,12 @@
-""" COVID-19 Contact Visualizer
+"""CSC111 Project: COVID-19 Contact Visualizer
 
-Graph Module
-This module contains the graph classes that store the contact tracing data.
+Module Description
+==================
+Person and Graph Dataclasses Module
+This module contains the classes that store the contact tracing data.
 
+Copyright and Usage Information
+===============================
 This file is Copyright (c) 2021 Simon Chen, Patricia Ding, Salman Husainie, Makayla Duffus
 """
 from __future__ import annotations

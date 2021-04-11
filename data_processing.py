@@ -8,8 +8,7 @@ COVID-19 contact visualizer.
 
 Copyright and Usage Information
 ===============================
-This file is Copyright (c) 2021 Simon Chen, Patricia Ding,
-Salman Husainie, and Makayla Duffus.
+This file is Copyright (c) 2021 Simon Chen, Patricia Ding, Salman Husainie, and Makayla Duffus.
 """
 from __future__ import annotations
 import csv
