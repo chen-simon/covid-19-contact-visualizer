@@ -6,7 +6,8 @@ This module contains the graph classes that store the contact tracing data.
 This file is Copyright (c) 2021 Simon Chen, Patricia Ding, Salman Husainie, Makayla Duffus
 """
 from __future__ import annotations
-from typing import Dict, Optional
+from typing import Dict, Optional, Tuple, Callable
+import colouring as colour
 import csv
 
 import networkx as nx
@@ -41,7 +42,7 @@ class _Person:
     neighbours: Dict[_Person, float]
     degrees_apart: Optional[int] = None
 
-    def __init__(self, identifier: str, name: str,  age: int, severity_level: float) -> None:
+    def __init__(self, identifier: str, name: str, age: int, severity_level: float) -> None:
         """Initialize a new person vertex with the given name, identifier, age, and severity level.
         """
         self.identifier = identifier
@@ -174,7 +175,7 @@ class Graph:
         """ Return a networkx Graph representing self."""
         graph_nx = nx.Graph()
         for p in self._people.values():
-            graph_nx.add_node(p.name)  # add node for each person
+            graph_nx.add_node(p.name, colour='rgb(155, 234, 58)')  # add node for each person
 
             for u in p.neighbours:
                 if u.name in graph_nx.nodes:
@@ -182,9 +183,27 @@ class Graph:
 
         return graph_nx
 
+    def to_nx_with_degree_colour(self) -> Tuple[nx.Graph, list[str]]:
+        """ Return a networkx Graph representing self along with a list of colours based off of
+        a function key for peeopoelpeou..,huagrud cg,r.  TODO: FIX THIS DOCSTRING UWU
+        """
+        graph_nx = nx.Graph()
+        colour_list = []
+
+        for p in self._people.values():
+            graph_nx.add_node(p.name)  # add node for each person
+            colour_list.append(colour.rgb_to_str(colour.degrees_apart_get_colour(p.degrees_apart)))
+
+            for u in p.neighbours:
+                if u.name in graph_nx.nodes:
+                    graph_nx.add_edge(p.name, u.name)  # add edge edge between each neighbour pair
+
+        return graph_nx, colour_list
+
 
 if __name__ == '__main__':
     import python_ta
+
     python_ta.check_all(config={
         'max-line-length': 100
     })

@@ -26,7 +26,7 @@ def render_degrees_apart() -> None:
     graph.recalculate_degrees()
 
     # Converts to nx.Graph
-    graph_nx, colours = graph.to_nx_with_colour()
+    graph_nx, colours = graph.to_nx_with_degree_colour()
 
     # i think this generates the positions randomly for each node according to the given layout
     # the layout is algorithm used by networkx
