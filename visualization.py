@@ -19,7 +19,7 @@ def render_degrees_apart() -> None:
 
     # TESTING COMMENT THIS BLOCK OUT LATER | arguments: (graph: Graph, init_infected: set[str])
     graph = data_processing.load_graph_csv('data/persons.csv', 'data/connections.csv')
-    init_infected = {'WJ5751'}
+    init_infected = {'XR7N23', 'ET441R'}
 
     # Degree calculation
     graph.set_infected(init_infected)
@@ -49,7 +49,8 @@ def render_degrees_apart() -> None:
                      y=y_edges,
                      mode='lines',
                      name='edges',
-                     line=dict(width=1),
+                     line=dict(width=2,
+                               color='rgb(0, 0, 0)'),
                      hoverinfo='none',
                      )
 
@@ -59,7 +60,7 @@ def render_degrees_apart() -> None:
                      mode='markers',
                      name='nodes',
                      marker=dict(symbol='circle-dot',
-                                 size=5,
+                                 size=50,
                                  color=colours,
                                  line=dict(width=0.5)
                                  ),
