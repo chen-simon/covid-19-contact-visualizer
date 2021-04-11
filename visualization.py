@@ -112,7 +112,8 @@ def visualize_dataset(graph: Graph) -> None:
                      y=y_edges,
                      mode='lines',
                      name='edges',
-                     line=dict(width=1),
+                     line=dict(width=2,
+                               color='rgb(0, 0, 0)'),
                      hoverinfo='none',
                      )
 
@@ -122,7 +123,7 @@ def visualize_dataset(graph: Graph) -> None:
                      mode='markers',
                      name='nodes',
                      marker=dict(symbol='circle-dot',
-                                 size=5,
+                                 size=50,
                                  color=colours,
                                  line=dict(width=0.5)
                                  ),
