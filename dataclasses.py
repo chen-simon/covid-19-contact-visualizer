@@ -199,11 +199,3 @@ class Graph:
                     graph_nx.add_edge(p.name, u.name)  # add edge edge between each neighbour pair
 
         return graph_nx, colour_list
-
-
-if __name__ == '__main__':
-    import python_ta
-
-    python_ta.check_all(config={
-        'max-line-length': 100
-    })
