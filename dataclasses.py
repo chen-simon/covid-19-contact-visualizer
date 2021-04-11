@@ -200,19 +200,19 @@ class Graph:
 
         return graph_nx
 
-    def to_nx_with_degree_colour(self) -> Tuple[nx.Graph, list[str]]:
+    def to_nx_with_degree_colour(self) -> nx.Graph:
         """ Return a networkx Graph representing self along with a list of colours based off of
         a function key for peeopoelpeou..,huagrud cg,r.  TODO: FIX THIS DOCSTRING UWU
         """
         graph_nx = nx.Graph()
-        colour_list = []
 
         for p in self._people.values():
             graph_nx.add_node(p.name)  # add node for each person
-            colour_list.append(colour.rgb_to_str(colour.degrees_apart_get_colour(p.degrees_apart)))
+            print(colour.rgb_to_str(colour.degrees_apart_get_colour(p.degrees_apart)))
+            graph_nx.nodes[p.name]['colour'] = colour.rgb_to_str(colour.degrees_apart_get_colour(p.degrees_apart))
 
             for u in p.neighbours:
                 if u.name in graph_nx.nodes:
                     graph_nx.add_edge(p.name, u.name)  # add edge edge between each neighbour pair
 
-        return graph_nx, colour_list
+        return graph_nx
