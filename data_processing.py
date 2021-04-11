@@ -11,7 +11,7 @@ import csv
 import random
 import string
 from typing import Tuple
-from graph import Graph
+from dataclasses import Graph
 
 
 def load_graph_csv(names_file: str, contact_file: str) -> Graph:

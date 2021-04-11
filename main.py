@@ -1,6 +1,6 @@
 """ COVID-19 Contact Visualizer
     Copyright Simon Chen, Patricia Ding, Salman Husainie, Makayla Duffus
 """
-import networkx
-from graph import Graph
-
+from networkx import nx
+from plotly.graph_objs import Scatter, Figure
+import data_processing
