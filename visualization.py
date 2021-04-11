@@ -17,17 +17,13 @@ import data_processing
 
 
 # Degrees visualization
-def render_degrees_apart() -> None:
+def render_degrees_apart(graph: Graph, init_infected: set[str]) -> None:
     """ Render the degrees visualization given a graph, and the initial set of infected people by
     ID.
 
     Preconditions:
         - all(not person.infected for person in graph._people.values())
     """
-
-    # TESTING COMMENT THIS BLOCK OUT LATER | arguments: (graph: Graph, init_infected: set[str])
-    graph = data_processing.load_graph_csv('data/persons.csv', 'data/connections.csv')
-    init_infected = {'XR7N23', 'ET441R'}
 
     # Degree calculation
     graph.set_infected(init_infected)
