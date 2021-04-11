@@ -10,7 +10,7 @@ from __future__ import annotations
 import csv
 import random
 import string
-from typing import Tuple
+from typing import Tuple, List
 from dataclasses import Graph
 
 
@@ -45,46 +45,41 @@ def create_test_graph(n: int) -> Graph:
     graph = Graph()
     people = []
 
-    # Add vertices to graph
-    for i in range(0, n):
-        _, name = generate_id_and_name()
-        graph.add_vertex(identifier=str(i), name=name, age=random.randint(18, 55),
+    for _ in range(0, n):
+        identity, name = _generate_id_and_name()
+        people.append(identity)
+        graph.add_vertex(identifier=str(identity), name=name, age=random.randint(18, 55),
                          severity_level=random.uniform(0, 1))
-        people.append(str(i))
 
-    rand_list = random_list(people)
+    times = random.randint(1, n // 2)
+    for _ in range(0, times):
+        rand_list = _random_list(people)
+        combos = [(i, j) for i in rand_list for j in rand_list if i != j]
 
-    for r in range(len(people) - 1):  # [0,1,2,3,4,5] = people
-        # [1,2,3]
-        # [3,4,5]
-        # [1,5]
-        graph.add_edge(people[r], people[r+1], random.uniform(0, 1))
-
-
-        # k = random.randint(0, i)
-        # for j in range(0, k):
-            # graph.add_edge(str(k), str(j), random.uniform(0, 1))
+        for pair in combos:
+            weight = random.uniform(0, 1)
+            graph.add_edge(pair[0], pair[1], weight)
 
     return graph
 
 
-def random_list(people: list) -> list:
-    """Return a randomly generated list of at  most len(people) // 2 integers
+def _random_list(people: List[str]) -> List[str]:
+    """Return a randomly generated list with at most len(people) // 2 strings
         Preconditions:
             - len(people) >= 5
     """
     new_list = []
-    num = random.randint(2, len(people) // 2)
-    for _ in range(0, num):
+    length = random.randint(2, len(people) // 2)
+    for _ in range(0, length):
         new_list.append(random.choice(people))
 
     return new_list
 
 
-def generate_id_and_name() -> Tuple[str, str]:
+def _generate_id_and_name() -> Tuple[str, str]:
     """ Return a tuple containing the following strings:
         1. A 6-digit id composed of uppercase ASCII letters and numbers for a _Person object.
-        2. The initials for a _Person object.
+        2. The initials for the name attribute of a _Person object.
     """
     id_chars = string.ascii_uppercase + string.digits
     name_chars = string.ascii_uppercase
