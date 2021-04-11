@@ -204,6 +204,7 @@ class Graph:
         """ Return a networkx Graph representing self along with a list of colours based off of
         a function key for peeopoelpeou..,huagrud cg,r.  TODO: FIX THIS DOCSTRING UWU
         """
+        # For patricia
         graph_nx = nx.Graph()
 
         for p in self._people.values():
