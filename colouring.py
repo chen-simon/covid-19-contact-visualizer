@@ -1,3 +1,15 @@
+"""CSC111 Project: COVID-19 Contact Visualizer
+
+Module Description
+==================
+Colouring Module
+This module contains the functions used to calculate the colours for the contact visualization.
+
+Copyright and Usage Information
+===============================
+This file is Copyright (c) 2021 Simon Chen, Patricia Ding, Salman Husainie, Makayla Duffus
+"""
+
 from math import e
 from typing import Optional, Tuple
 
