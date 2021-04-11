@@ -4,3 +4,4 @@
 from networkx import nx
 from plotly.graph_objs import Scatter, Figure
 import data_processing
+import plotly.graph_objects as go
