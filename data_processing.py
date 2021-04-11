@@ -50,7 +50,7 @@ def load_graph_csv(names_file: str, contact_file: str) -> Graph:
 
 
 def create_test_graph(n: int) -> Graph:
-    """ Return a connected Graph containing n _Person objects.
+    """ Return a Graph containing n _Person objects.
 
     Preconditions:
         - n >= 5
@@ -64,7 +64,7 @@ def create_test_graph(n: int) -> Graph:
         graph.add_vertex(identifier=str(identity), name=name, age=random.randint(18, 55),
                          severity_level=random.uniform(0, 1))
 
-    times = random.randint(1, n // 2)  # Setting a boundary for maximum weighted edges for a vertex
+    times = random.randint(1, n // 4)  # Setting a boundary for maximum weighted edges for a vertex
 
     for _ in range(0, times):
         rand_list = _random_list(people)
