@@ -119,3 +119,26 @@ def _generate_id_and_name() -> Tuple[str, str]:
     name_chars = string.ascii_uppercase
     return (''.join(random.choice(id_chars) for _ in range(6)), random.choice(name_chars) + '. ' +
             random.choice(name_chars))
+
+
+def get_random_weight(level: str) -> float:
+    """ Return a float value to represent the weight of an edge between two _Person objects
+    according to the given level. The level, (high, medium, low) determines the range from which the
+    random float value is chosen.
+
+    The range per level is as follows, where w is the weight:
+        - 'high': 0.65 <= w <= 1.0
+        - 'medium': 0.45 <= w <= 0.6
+        - 'low': 0.05 <= w <= 0.4
+
+        Preconditions:
+            - level in {'high', 'low', 'medium'}
+    """
+    if level == 'high':
+        weight = random.uniform(0.65, 1.0)
+    elif level == 'medium':
+        weight = random.uniform(0.45, 0.6)
+    else:  # type == 'low'
+        weight = random.uniform(0.05, 0.4)
+
+    return weight
