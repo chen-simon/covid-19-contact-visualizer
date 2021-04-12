@@ -49,10 +49,16 @@ def load_graph_csv(names_file: str, contact_file: str) -> Graph:
 # =========================
 
 
-def generate_connected_graph_no_csv(n: int) -> Graph:
-    """ Return a connected Graph containing n _Person objects.
+def generate_connected_graph_no_csv(n: int, level: str) -> Graph:
+    """ Return a connected Graph containing n _Person objects with
+        n + n // 5 total edges.
+
+        The level, (high, medium, low) determines the range from which the
+        weight between edges is chosen.
+
         Preconditions:
-            - n<=100
+            - 5 <= n <= 100
+            - level in {'high', 'medium', 'low'}
     """
     edges = n + n // 5
     people = []
@@ -74,19 +80,22 @@ def generate_connected_graph_no_csv(n: int) -> Graph:
     edges_so_far = 0
 
     while remaining != set():
-        new_neighbor = random.choice(list(people))
+        new_neighbor = random.choice(people)    # Check if error
 
         if new_neighbor not in visited:
-            graph.add_edge(current_person, new_neighbor, random.uniform(0, 1))
+            graph.add_edge(current_person, new_neighbor, get_leveled_weight(level))
             edges_so_far += 1
             remaining.remove(new_neighbor)
             visited.add(new_neighbor)
 
-        current_person = new_neighbor
+        current_person = new_neighbor   # Move on to the next person
 
     while edges_so_far < edges:
-        graph.add_edge(random.choice(people), random.choice(people), random.uniform(0, 1))
-        edges_so_far += 1
+        # Checking in case person_1 and person_2 are the same person
+        person_1, person_2 = random.choice(people), random.choice(people)
+        if person_1 != person_2:
+            graph.add_edge(person_1, person_2, get_leveled_weight(level))
+            edges_so_far += 1
 
     return graph
 
@@ -114,3 +123,26 @@ def _generate_id_and_name() -> Tuple[str, str]:
     name_chars = string.ascii_uppercase
     return (''.join(random.choice(id_chars) for _ in range(6)), random.choice(name_chars) + '. ' +
             random.choice(name_chars))
+
+
+def get_leveled_weight(level: str) -> float:
+    """ Return a float value to represent the weight of an edge between two _Person objects
+    according to the given level. The level, (high, medium, low) determines the range from which the
+    random float value is chosen.
+
+    The range per level is as follows, where w is the weight:
+        - 'high': 0.65 <= w <= 1.0
+        - 'medium': 0.45 <= w <= 0.6
+        - 'low': 0.05 <= w <= 0.4
+
+        Preconditions:
+            - level in {'high', 'low', 'medium'}
+    """
+    if level == 'high':
+        weight = random.uniform(0.65, 1.0)
+    elif level == 'medium':
+        weight = random.uniform(0.45, 0.6)
+    else:  # type == 'low'
+        weight = random.uniform(0.05, 0.4)
+
+    return weight
