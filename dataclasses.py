@@ -61,7 +61,6 @@ class _Person:
 
     # DEGREE CALCULATION
     def calculate_degrees_apart(self, curr_degree: int, visited: set,
-                                max_degree: Optional[int] = None,
                                 init_call: bool = True) -> None:
         """Update degrees_apart for all the people this person is connected to,
         where degrees_apart is the smallest degree apart between this person and an infected
@@ -72,9 +71,6 @@ class _Person:
         """
         # This will ensure that degrees_apart is always calculating the smallest degree between
         # an infected person.
-        if max_degree is not None and curr_degree > max_degree:
-            return
-
         if not init_call and curr_degree == 0:
             return  # To avoid redundant calculations
 
@@ -84,7 +80,7 @@ class _Person:
         visited.add(self)
         for person in self.neighbours:
             if person not in visited:
-                person.calculate_degrees_apart(curr_degree + 1, visited.copy(), max_degree, False)
+                person.calculate_degrees_apart(curr_degree + 1, visited.copy(), False)
 
     def get_degree(self) -> int:
         """Return smallest degree apart from an infected vertex. Raise ValueError if has not
@@ -171,7 +167,7 @@ class Graph:
         for identifier in init_infected:
             self._people[identifier].infected = True
 
-    def recalculate_degrees(self, max_degree: Optional[int] = None) -> None:
+    def recalculate_degrees(self) -> None:
         """ Recalculates the degrees_apart attribute for each connected person to an infected.
 
         Max degree is the max depth the recursive call will calculate in order to avoid large
@@ -188,10 +184,7 @@ class Graph:
 
         for infected_person in infected_people:
             # This method calculates it for its neighbours
-            if max_degree is not None:
-                infected_person.calculate_degrees_apart(0, set(), max_degree)
-            else:
-                infected_person.calculate_degrees_apart(0, set())
+            infected_person.calculate_degrees_apart(0, set())
 
     def _reset_degrees(self) -> None:
         """ Resets all degrees_apart attributes in graph to be None
