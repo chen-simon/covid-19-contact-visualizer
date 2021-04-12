@@ -10,7 +10,7 @@ Copyright and Usage Information
 This file is Copyright (c) 2021 Simon Chen, Patricia Ding, Salman Husainie, Makayla Duffus
 """
 from __future__ import annotations
-from typing import Dict, Optional
+from typing import Any, Dict, Optional
 import colouring as colour
 import networkx as nx
 
@@ -121,6 +121,14 @@ class Graph:
     def get_people(self):
         """ Return a __ of all the people"""
         return self._people
+
+    def get_neighbours(self, item: Any):
+        """Return the neighbours of this person"""
+        return list(self._people[item].neighbours)
+
+    def get_weight(self, person1: Any, person2: Any) -> float:
+        """Return the weight between person1 and person2"""
+        return self._people[person1].neighbours[person2]
 
     def add_vertex(self, identifier: str, name: str, age: int, severity_level: float) -> None:
         """Add a vertex with the given identifier, name, age, and severity level to this graph.
