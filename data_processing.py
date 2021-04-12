@@ -100,18 +100,54 @@ def generate_connected_graph(n: int, level: str = 'medium') -> Graph:
     return graph
 
 
-def _random_list(people: List[str]) -> List[str]:
-    """Return a randomly generated list with at most len(people) // 2 strings
+def generate_disconnected_graph(n: int, level: str = 'medium') -> Graph:
+    """ Return a non-connected graph of n _Person objects. The returned graph has a larger connected
+     portion and a random smaller number of clusters/lone objects.
+
+     The level, (high, medium, low) determines the range from which the weight
+     between edges is chosen.
 
     Preconditions:
-        - len(people) >= 5
+        - 5 <= n <= 100
+        - level in {'high', 'low', 'medium'}
     """
-    new_list = []
-    length = random.randint(2, len(people) // 2)
-    for _ in range(0, length):
-        new_list.append(random.choice(people))
+    num_of_disconnected = n // 5
+    graph = generate_connected_graph(n - num_of_disconnected, level)
 
-    return new_list
+    # LOOP ACCUMULATOR: stores the identifiers for the loner _Person objects
+    loner = []
+
+    # Add num_of_disconnected _Person objects with randomly generated information to the graph
+    for _ in range(0, num_of_disconnected):
+        identity, name = _generate_id_and_name()
+        loner.append(identity)
+        graph.add_vertex(identity, name, random.randint(18, 55), get_leveled_weight(level))
+
+    times = random.randint(0, num_of_disconnected // 2)
+    # number of times connections between loners will be made
+
+    # Adds random edges between items in loner list
+    for _ in range(times):
+        to_be_connected = _random_list_of_two(loner)
+        graph.add_edge(to_be_connected[0], to_be_connected[1], get_leveled_weight(level))
+
+    return graph
+
+
+def _random_list_of_two(people: List[str]) -> List[str]:
+    """Return a randomly generated list of two strings representing _Person identifier attributes.
+
+        Preconditions:
+            - len(people) >= 2
+            - any(x != y for x in people for y in people)
+    """
+    person_1 = random.choice(people)
+    person_2 = random.choice(people)
+
+    if person_2 != person_1:
+        return [person_1, person_2]
+    else:
+        return _random_list_of_two(people)
 
 
 def _generate_id_and_name() -> Tuple[str, str]:
