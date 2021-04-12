@@ -9,16 +9,24 @@ Copyright and Usage Information
 ===============================
 This file is Copyright (c) 2021 Simon Chen, Patricia Ding, Salman Husainie, Makayla Duffus
 """
-
+import math
 from math import e
 from typing import Optional, Tuple
+from functools import cache
 
+
+# DEGREES APART CONSTANTS
 INFECTED_COLOUR = (255, 0, 0)
 
+MIN_FILL = 0.95
+STRETCH = 0.6
+OFFSET = math.log(MIN_FILL)  # for the degrees apart exponential curve
 
+
+@cache  # To avoid unnecessary re-calculations
 def degrees_apart_get_colour(degrees_apart: Optional[int]) -> Tuple[int, int, int]:
     """ Given a degrees_apart, return the appropriate colour of the person. The colour calculation
-    is a sigmoid function.
+    is an exponential decay function.
     """
     # Hard coded base case degree colours
     if degrees_apart is None:
@@ -26,10 +34,7 @@ def degrees_apart_get_colour(degrees_apart: Optional[int]) -> Tuple[int, int, in
     elif degrees_apart == 0:
         return INFECTED_COLOUR
 
-    stretch = 1.2
-    offset = 1.4  # Hard coded values for sigmoid curve
-
-    percent_fill = 1 / (1 + e ** -(stretch * degrees_apart - offset))  # Sigmoid function
+    percent_fill = -(e ** -(STRETCH * degrees_apart - OFFSET)) + MIN_FILL  # Exponential curve
     # Gradient from INFECTED_COLOUR to white
     return (int(INFECTED_COLOUR[0] + ((255 - INFECTED_COLOUR[0]) * percent_fill)),
             int(INFECTED_COLOUR[1] + ((255 - INFECTED_COLOUR[1]) * percent_fill)),

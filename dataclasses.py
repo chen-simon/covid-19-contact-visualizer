@@ -61,7 +61,8 @@ class _Person:
 
     # DEGREE CALCULATION
     def calculate_degrees_apart(self, curr_degree: int, visited: set,
-                                max_degree: Optional[int] = None) -> None:
+                                max_degree: Optional[int] = None,
+                                init_call: bool = True) -> None:
         """Update degrees_apart for all the people this person is connected to,
         where degrees_apart is the smallest degree apart between this person and an infected
         person.
@@ -74,13 +75,16 @@ class _Person:
         if max_degree is not None and curr_degree > max_degree:
             return
 
+        if not init_call and curr_degree == 0:
+            return  # To avoid redundant calculations
+
         if self.degrees_apart is None or curr_degree < self.degrees_apart:
             self.degrees_apart = curr_degree
 
         visited.add(self)
         for person in self.neighbours:
             if person not in visited:
-                person.calculate_degrees_apart(curr_degree + 1, visited.copy(), max_degree)
+                person.calculate_degrees_apart(curr_degree + 1, visited.copy(), max_degree, False)
 
     def get_degree(self) -> int:
         """Return smallest degree apart from an infected vertex. Raise ValueError if has not
