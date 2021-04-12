@@ -26,7 +26,7 @@ def render_degrees_apart(graph: Graph, init_infected: set[str]) -> None:
     """
     # Degree calculation
     graph.set_infected(init_infected)
-    graph.recalculate_degrees(max_degree=4)
+    graph.recalculate_degrees()
 
     # Converts to nx.Graph
     graph_nx = graph.to_nx_with_degree_colour()

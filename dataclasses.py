@@ -74,6 +74,9 @@ class _Person:
         if max_degree is not None and curr_degree > max_degree:
             return
 
+        if curr_degree == 0:
+            return  # To avoid redundant calculations
+
         if self.degrees_apart is None or curr_degree < self.degrees_apart:
             self.degrees_apart = curr_degree
 
