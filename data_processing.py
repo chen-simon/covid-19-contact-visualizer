@@ -49,12 +49,16 @@ def load_graph_csv(names_file: str, contact_file: str) -> Graph:
 # =========================
 
 
-def generate_connected_graph_no_csv(n: int) -> Graph:
+def generate_connected_graph_no_csv(n: int, level: str) -> Graph:
     """ Return a connected Graph containing n _Person objects with
         n + n // 5 total edges.
 
+        The level, (high, medium, low) determines the range from which the
+        weight between edges is chosen.
+
         Preconditions:
             - 5 <= n <= 100
+            - level in {'high', 'medium', 'low'}
     """
     edges = n + n // 5
     people = []
@@ -79,7 +83,7 @@ def generate_connected_graph_no_csv(n: int) -> Graph:
         new_neighbor = random.choice(people)    # Check if error
 
         if new_neighbor not in visited:
-            graph.add_edge(current_person, new_neighbor, random.uniform(0, 1))
+            graph.add_edge(current_person, new_neighbor, get_leveled_weight(level))
             edges_so_far += 1
             remaining.remove(new_neighbor)
             visited.add(new_neighbor)
@@ -90,7 +94,7 @@ def generate_connected_graph_no_csv(n: int) -> Graph:
         # Checking in case person_1 and person_2 are the same person
         person_1, person_2 = random.choice(people), random.choice(people)
         if person_1 != person_2:
-            graph.add_edge(person_1, person_2, random.uniform(0, 1))
+            graph.add_edge(person_1, person_2, get_leveled_weight(level))
             edges_so_far += 1
 
     return graph
@@ -121,7 +125,7 @@ def _generate_id_and_name() -> Tuple[str, str]:
             random.choice(name_chars))
 
 
-def get_random_weight(level: str) -> float:
+def get_leveled_weight(level: str) -> float:
     """ Return a float value to represent the weight of an edge between two _Person objects
     according to the given level. The level, (high, medium, low) determines the range from which the
     random float value is chosen.
