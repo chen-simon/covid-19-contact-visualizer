@@ -49,30 +49,44 @@ def load_graph_csv(names_file: str, contact_file: str) -> Graph:
 # =========================
 
 
-def create_test_graph(n: int) -> Graph:
-    """ Return a Graph containing n _Person objects.
-
-    Preconditions:
-        - n >= 5
+def generate_connected_graph_no_csv(n: int) -> Graph:
+    """ Return a connected Graph containing n _Person objects.
+        Preconditions:
+            - n<=100
     """
+    edges = n + n // 5
+    people = []
     graph = Graph()
-    people = []     # An accumulator containing the id's of each _Person object added
 
+    # Add n _Person objects with randomly generated attributes to the graph
     for _ in range(0, n):
         identity, name = _generate_id_and_name()
         people.append(identity)
-        graph.add_vertex(identifier=identity, name=name, age=random.randint(18, 55),
-                         severity_level=random.uniform(0, 1))
+        graph.add_vertex(identity, name, random.randint(18, 55), random.uniform(0, 1))
 
-    times = random.randint(1, n // 4)  # Setting a boundary for maximum weighted edges for a vertex
+    remaining, visited = set(people), set()
 
-    for _ in range(0, times):
-        rand_list = _random_list(people)
-        combos = [(i, j) for i in rand_list for j in rand_list if i != j]
+    current_person = random.choice(list(remaining))
+    remaining.remove(current_person)
+    visited.add(current_person)
 
-        for pair in combos:
-            weight = random.uniform(0, 1)
-            graph.add_edge(pair[0], pair[1], weight)
+    # LOOP ACCUMULATOR: store the number of edges in the graph so far
+    edges_so_far = 0
+
+    while remaining != set():
+        new_neighbor = random.choice(list(people))
+
+        if new_neighbor not in visited:
+            graph.add_edge(current_person, new_neighbor, random.uniform(0, 1))
+            edges_so_far += 1
+            remaining.remove(new_neighbor)
+            visited.add(new_neighbor)
+
+        current_person = new_neighbor
+
+    while edges_so_far < edges:
+        graph.add_edge(random.choice(people), random.choice(people), random.uniform(0, 1))
+        edges_so_far += 1
 
     return graph
 
