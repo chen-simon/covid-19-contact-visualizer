@@ -14,58 +14,62 @@ import random
 import networkx as nx
 
 import data_processing
-import visualization
+import dataclasses
+import visualization as vis
 from dataclasses import Graph
 from plotly.graph_objs import Scatter, Figure
+import plotly.graph_objects as go
 
 
-def start_simulation() -> None:
-    """Run the beginning of the simulation"""
+class Simulation:
+    """ A simulation of the graph over time.
+    """
+    _graph: dataclasses.Graph
+    _frames: list[go.Frame]
+    _init_infected: set[str]
 
-    # create a graph and choose infected person randomly
-    graph = data_processing.generate_connected_graph_no_csv(50)
-    graph_nx = graph.to_nx()
-    pos = getattr(nx, 'spring_layout')(graph_nx)
+    def __init__(self, graph: Graph):
+        if graph is not None:
+            self._graph = graph
+        else:
+            graph = data_processing.generate_connected_graph_no_csv(50)
 
-    init_infected = random.choice(list(graph.get_people()))
-    graph.set_infected({init_infected})
+        self._init_infected = {random.choice(list(self._graph.get_people()))}
+        self._frames = []
 
-    normal_infected = {init_infected}
-    buffer_infected = set()
+    def run(self, ticks: int) -> None:
+        """Run the simulation for a given amount of ticks.
+        """
+        # Establish
+        graph_nx = self._graph.to_nx()
+        pos = getattr(nx, 'spring_layout')(graph_nx)
+        self._graph.set_infected(self._init_infected)
 
-    # time limit for loop - 2 weeks
-    for _ in range(20):
-        normal_infected = normal_infected.union(buffer_infected)
-        graph.set_infected(buffer_infected)
+        infected = self._init_infected
         buffer_infected = set()
-        # checking every connection where one node is infected
-        for person in normal_infected:
-            for neighbour in graph.get_neighbours(person):
-                result = determine_infected(graph.get_weight(person, neighbour))
 
-                if result:
-                    buffer_infected.add(neighbour)
+        # Renders the initial state frame
+        self._frames.append(vis.render_simulation_frame(self._graph, pos))
+        print(self._frames[0].data)
 
-        graph_nx = graph.to_nx_with_simulation_colour()
+        # Loops for the amount of ticks, rendering each frame as it goes
+        for _ in range(ticks):
+            # Updates the infected and
+            infected = infected.union(buffer_infected)
+            self._graph.set_infected(buffer_infected)
+            buffer_infected = set()
+            # checking every connection where one node is infected
+            for person in infected:
+                for neighbour in self._graph.get_neighbours(person):
+                    result = determine_infected(self._graph.get_weight(person, neighbour))
 
-        # create frame
-        colours = [graph_nx.nodes[node]['colour'] for node in graph_nx.nodes]
-        x_values = [pos[k][0] for k in graph_nx.nodes]
-        y_values = [pos[k][1] for k in graph_nx.nodes]
-        labels = list(graph_nx.nodes)
-        trace4 = Scatter(x=x_values,
-                         y=y_values,
-                         mode='markers',
-                         name='nodes',
-                         marker=dict(symbol='circle-dot',
-                                     size=50,
-                                     color=colours,
-                                     line=dict(width=0.5)
-                                     ),
-                         text=labels,
-                         hovertemplate='%{text}',
-                         hoverlabel={'namelength': 0}
-                         )
+                    if result:
+                        buffer_infected.add(neighbour.identifier)
+
+            # Renders the frame for the end of tick.
+            self._frames.append(vis.render_simulation_frame(self._graph, pos))
+
+        vis.render_simulation_full(self._frames)
 
 
 def determine_infected(edge_weight: float) -> bool:

@@ -262,3 +262,70 @@ def visualize_dataset_animate() -> None:
     fig.update_yaxes(showgrid=False, zeroline=False, visible=False)
 
     fig.show()
+
+
+def render_simulation_frame(graph: Graph, pos: list) -> go.Frame:
+    """ Return a plotly graph object Frame given a graph and the positions of each person on the
+    rendered graph.
+    """
+    graph_nx = graph.to_nx_with_simulation_colour()
+
+    # create frame
+    colours = [graph_nx.nodes[node]['colour'] for node in graph_nx.nodes]
+    x_values = [pos[k][0] for k in graph_nx.nodes]
+    y_values = [pos[k][1] for k in graph_nx.nodes]
+    labels = list(graph_nx.nodes)
+
+    # put positions of edges into lists
+    x_edges = []
+    y_edges = []
+    for edge in graph_nx.edges:
+        x_edges += [pos[edge[0]][0], pos[edge[1]][0], None]
+        y_edges += [pos[edge[0]][1], pos[edge[1]][1], None]
+
+    # create the edges in plotly
+    trace3 = Scatter(x=x_edges,
+                     y=y_edges,
+                     mode='lines',
+                     name='edges',
+                     line=dict(width=2,
+                               color='rgb(0, 0, 0)'),
+                     hoverinfo='none',
+                     )
+
+    trace4 = Scatter(x=x_values,
+                     y=y_values,
+                     mode='markers',
+                     name='nodes',
+                     marker=dict(symbol='circle-dot',
+                                 size=50,
+                                 color=colours,
+                                 line=dict(width=0.5)
+                                 ),
+                     text=labels,
+                     hovertemplate='%{text}',
+                     hoverlabel={'namelength': 0}
+                     )
+
+    return go.Frame(data=[trace3, trace4])
+
+
+def render_simulation_full(frames: list[go.Frame]) -> None:
+    fig = Figure(data=frames[0].data,
+                 layout=go.Layout(
+                     xaxis=dict(range=[0, 5], autorange=False),
+                     yaxis=dict(range=[0, 5], autorange=False),
+                     title="Start Title",
+                     updatemenus=[dict(
+                         type="buttons",
+                         buttons=[dict(label="Play",
+                                       method="animate",
+                                       args=[None])])]
+                 ),
+                 frames=frames
+                 )
+    fig.update_layout({'showlegend': False})
+    fig.update_xaxes(showgrid=False, zeroline=False, visible=False)
+    fig.update_yaxes(showgrid=False, zeroline=False, visible=False)
+
+    fig.show()
