@@ -49,7 +49,7 @@ def load_graph_csv(names_file: str, contact_file: str) -> Graph:
 # =========================
 
 
-def generate_connected_graph_no_csv(n: int, level: str) -> Graph:
+def generate_connected_graph(n: int, level: str = 'medium') -> Graph:
     """ Return a connected Graph containing n _Person objects with
         n + n // 5 total edges.
 

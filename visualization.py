@@ -162,7 +162,7 @@ def visualize_dataset(graph: Graph) -> None:
 def visualize_dataset_animate() -> None:
     """Testing out plotly animations using frames"""
     # load the graph
-    graph = data_processing.generate_connected_graph_no_csv(20)
+    graph = data_processing.generate_connected_graph(20)
     graph_nx = graph.to_nx()
 
     # i think this generates the positions randomly for each node according to the given layout

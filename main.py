@@ -27,7 +27,7 @@ def run_degrees_example() -> None:
 def run_degrees_example_generated() -> None:
     """ Run the example degrees risk visualization using the sample graph of people.
     """
-    graph = data_processing.generate_connected_graph_no_csv(50)
+    graph = data_processing.generate_connected_graph(50)
     init_infected = {random.choice(list(graph.get_people()))}
 
     visualization.render_degrees_apart(graph, init_infected)

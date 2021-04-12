@@ -33,7 +33,7 @@ class Simulation:
         if graph is not None:
             self._graph = graph
         else:
-            self._graph = data_processing.generate_connected_graph_no_csv(50, 'medium')
+            self._graph = data_processing.generate_connected_graph(50)
 
         self._init_infected = {random.choice(list(self._graph.get_people()))}
         self._frames = []
