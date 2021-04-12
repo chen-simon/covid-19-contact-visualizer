@@ -36,8 +36,8 @@ def run_degrees_example_generated() -> None:
 def run_simulation_example() -> None:
     """ Run the example simulation using the sample graph of people.
     """
-    graph = data_processing.load_graph_csv('data/persons.csv', 'data/connections.csv')
-    sim = Simulation(graph)
+    # graph = data_processing.load_graph_csv('data/persons.csv', 'data/connections.csv')
+    sim = Simulation()
     sim.run(20)
 
 

@@ -19,6 +19,7 @@ import visualization as vis
 from dataclasses import Graph
 from plotly.graph_objs import Scatter, Figure
 import plotly.graph_objects as go
+from typing import Optional
 
 
 class Simulation:
@@ -28,11 +29,11 @@ class Simulation:
     _frames: list[go.Frame]
     _init_infected: set[str]
 
-    def __init__(self, graph: Graph):
+    def __init__(self, graph: Optional[Graph] = None):
         if graph is not None:
             self._graph = graph
         else:
-            graph = data_processing.generate_connected_graph_no_csv(50)
+            self._graph = data_processing.generate_connected_graph_no_csv(50, 'medium')
 
         self._init_infected = {random.choice(list(self._graph.get_people()))}
         self._frames = []
