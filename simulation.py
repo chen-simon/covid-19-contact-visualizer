@@ -46,8 +46,10 @@ def start_simulation() -> None:
                 if result:
                     buffer_infected.add(neighbour)
 
+        graph_nx = graph.to_nx_with_simulation_colour()
+
         # create frame
-        colours1 = ['rgb(255, 0, 0)' for _ in range(len(graph_nx.nodes))]
+        colours = [graph_nx.nodes[node]['colour'] for node in graph_nx.nodes]
         x_values = [pos[k][0] for k in graph_nx.nodes]
         y_values = [pos[k][1] for k in graph_nx.nodes]
         labels = list(graph_nx.nodes)
@@ -57,7 +59,7 @@ def start_simulation() -> None:
                          name='nodes',
                          marker=dict(symbol='circle-dot',
                                      size=50,
-                                     color=colours1,
+                                     color=colours,
                                      line=dict(width=0.5)
                                      ),
                          text=labels,
@@ -65,17 +67,6 @@ def start_simulation() -> None:
                          hoverlabel={'namelength': 0}
                          )
 
-
-
-
-
-
-    for neighbour in graph.get_neighbours(init_infected):
-        # decide if neighbour gets infected based on edge weight
-        result = determine_infected(graph._people[init_infected].neighbours[neighbour])
-
-        if result:
-            graph.set_infected({neighbour})
 
 def determine_infected(edge_weight: float) -> bool:
     """Determine if neighbour becomes infected and set the person's infected bool accordingly."""

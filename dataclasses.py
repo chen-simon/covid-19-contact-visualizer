@@ -220,3 +220,20 @@ class Graph:
                     graph_nx.add_edge(p.name, u.name)  # add edge edge between each neighbour pair
 
         return graph_nx
+
+    def to_nx_with_simulation_colour(self) -> nx.Graph:
+        """Return a networkx Graph representing self. This function also sets an additional
+        attribute, 'colour', for each node in the networkx graph.
+        """
+        graph_nx = nx.Graph()
+
+        for p in self._people.values():
+            graph_nx.add_node(p.name)  # add node for each person
+            node_colour = colour.INFECTED_COLOUR if p.infected else 'rgb(255, 255, 255)'
+            graph_nx.nodes[p.name]['colour'] = node_colour
+
+            for u in p.neighbours:
+                if u.name in graph_nx.nodes:
+                    graph_nx.add_edge(p.name, u.name)  # add edge edge between each neighbour pair
+
+        return graph_nx
