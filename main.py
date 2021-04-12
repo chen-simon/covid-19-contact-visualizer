@@ -23,8 +23,15 @@ def run_degrees_example() -> None:
     visualization.render_degrees_apart(graph, init_infected)
 
 
+def run_degrees_example_generated() -> None:
+    """ Run the example degrees risk visualization using the sample graph of people.
+    """
+    graph = data_processing.create_test_graph(50)
+    init_infected = {random.choice(list(graph.get_people()))}
+
+    visualization.render_degrees_apart(graph, init_infected)
+
+
 if __name__ == '__main__':
     # visualize degree graph
-    graph = data_processing.create_test_graph(20)
-    infected = {random.choice(list(graph._people))}
-    visualization.render_degrees_apart(graph, infected)
+    run_degrees_example_generated()
