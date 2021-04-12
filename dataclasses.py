@@ -114,6 +114,10 @@ class Graph:
         """Initialize an empty graph."""
         self._people = {}
 
+    def get_people(self):
+        """ Return a __ of all the people"""
+        return self._people
+
     def add_vertex(self, identifier: str, name: str, age: int, severity_level: float) -> None:
         """Add a vertex with the given identifier, name, age, and severity level to this graph.
         """
