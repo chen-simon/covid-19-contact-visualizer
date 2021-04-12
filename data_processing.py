@@ -50,9 +50,11 @@ def load_graph_csv(names_file: str, contact_file: str) -> Graph:
 
 
 def generate_connected_graph_no_csv(n: int) -> Graph:
-    """ Return a connected Graph containing n _Person objects.
+    """ Return a connected Graph containing n _Person objects with
+        n + n // 5 total edges.
+
         Preconditions:
-            - n<=100
+            - 5 <= n <= 100
     """
     edges = n + n // 5
     people = []
@@ -74,7 +76,7 @@ def generate_connected_graph_no_csv(n: int) -> Graph:
     edges_so_far = 0
 
     while remaining != set():
-        new_neighbor = random.choice(list(people))
+        new_neighbor = random.choice(people)    # Check if error
 
         if new_neighbor not in visited:
             graph.add_edge(current_person, new_neighbor, random.uniform(0, 1))
@@ -82,11 +84,14 @@ def generate_connected_graph_no_csv(n: int) -> Graph:
             remaining.remove(new_neighbor)
             visited.add(new_neighbor)
 
-        current_person = new_neighbor
+        current_person = new_neighbor   # Move on to the next person
 
     while edges_so_far < edges:
-        graph.add_edge(random.choice(people), random.choice(people), random.uniform(0, 1))
-        edges_so_far += 1
+        # Checking in case person_1 and person_2 are the same person
+        person_1, person_2 = random.choice(people), random.choice(people)
+        if person_1 != person_2:
+            graph.add_edge(person_1, person_2, random.uniform(0, 1))
+            edges_so_far += 1
 
     return graph
 
