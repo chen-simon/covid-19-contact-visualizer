@@ -10,10 +10,8 @@ Copyright and Usage Information
 This file is Copyright (c) 2021 Simon Chen, Patricia Ding, Salman Husainie, Makayla Duffus
 """
 from __future__ import annotations
-from typing import Dict, Optional, Tuple, Callable
+from typing import Dict, Optional
 import colouring as colour
-import csv
-
 import networkx as nx
 
 
@@ -60,9 +58,6 @@ class _Person:
     def change_infection_status(self) -> None:
         """Reverses the current infection status of the person."""
         self.infected = not self.infected
-
-    # SIMULATION CALCULATION
-    #    TODO: put simulation vertex methods here
 
     # DEGREE CALCULATION
     def calculate_degrees_apart(self, curr_degree: int, visited: set,
@@ -201,16 +196,15 @@ class Graph:
         return graph_nx
 
     def to_nx_with_degree_colour(self) -> nx.Graph:
-        """ Return a networkx Graph representing self along with a list of colours based off of
-        a function key for peeopoelpeou..,huagrud cg,r.  TODO: FIX THIS DOCSTRING UWU
+        """Return a networkx Graph representing self. This function also sets an additional
+        attribute, 'colour', for each node in the networkx graph.
         """
-        # For patricia
         graph_nx = nx.Graph()
 
         for p in self._people.values():
             graph_nx.add_node(p.name)  # add node for each person
-            print(colour.rgb_to_str(colour.degrees_apart_get_colour(p.degrees_apart)))
-            graph_nx.nodes[p.name]['colour'] = colour.rgb_to_str(colour.degrees_apart_get_colour(p.degrees_apart))
+            node_colour = colour.rgb_to_str(colour.degrees_apart_get_colour(p.degrees_apart))
+            graph_nx.nodes[p.name]['colour'] = node_colour
 
             for u in p.neighbours:
                 if u.name in graph_nx.nodes:

@@ -9,10 +9,10 @@ Copyright and Usage Information
 ===============================
 This file is Copyright (c) 2021 Simon Chen, Patricia Ding, Salman Husainie, Makayla Duffus
 """
-from networkx import nx
-from plotly.graph_objs import Scatter, Figure
 import visualization
 import data_processing
+import random
+
 
 def run_degrees_example() -> None:
     """ Run the example degrees risk visualization using the sample graph of people.
@@ -21,3 +21,10 @@ def run_degrees_example() -> None:
     init_infected = {'WJ5751'}
 
     visualization.render_degrees_apart(graph, init_infected)
+
+
+if __name__ == '__main__':
+    # visualize degree graph
+    graph = data_processing.create_test_graph(20)
+    infected = {random.choice(list(graph._people))}
+    visualization.render_degrees_apart(graph, infected)

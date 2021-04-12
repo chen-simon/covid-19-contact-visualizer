@@ -11,10 +11,10 @@ This file is Copyright (c) 2021 Simon Chen, Patricia Ding, Salman Husainie, Maka
 """
 import networkx as nx
 from dataclasses import Graph
-# import matplotlib.pyplot as plt
 from plotly.graph_objs import Scatter, Figure
 import data_processing
 import plotly.graph_objects as go
+
 
 # Degrees visualization
 def render_degrees_apart(graph: Graph, init_infected: set[str]) -> None:
@@ -24,7 +24,6 @@ def render_degrees_apart(graph: Graph, init_infected: set[str]) -> None:
     Preconditions:
         - all(not person.infected for person in graph._people.values())
     """
-
     # Degree calculation
     graph.set_infected(init_infected)
     graph.recalculate_degrees(max_degree=4)
@@ -33,6 +32,7 @@ def render_degrees_apart(graph: Graph, init_infected: set[str]) -> None:
     graph_nx = graph.to_nx_with_degree_colour()
 
     colours = [graph_nx.nodes[node]['colour'] for node in graph_nx.nodes]
+
     # i think this generates the positions randomly for each node according to the given layout
     # the layout is algorithm used by networkx
     pos = getattr(nx, 'spring_layout')(graph_nx)
@@ -76,6 +76,7 @@ def render_degrees_apart(graph: Graph, init_infected: set[str]) -> None:
 
     # add these nodes and edges to the figure and show the graph
     data1 = [trace3, trace4]
+
     fig = Figure(data=data1)
     fig.update_layout({'showlegend': False})
     fig.update_xaxes(showgrid=False, zeroline=False, visible=False)
@@ -135,7 +136,22 @@ def visualize_dataset(graph: Graph) -> None:
 
     # add these nodes and edges to the figure and show the graph
     data1 = [trace3, trace4]
-    fig = Figure(data=data1)
+    # fig = Figure(data=data1)
+    fig = Figure(data=data1,
+                 layout=go.Layout(
+                     xaxis=dict(range=[0, 5], autorange=False),
+                     yaxis=dict(range=[0, 5], autorange=False),
+                     title="Start Title",
+                     updatemenus=[dict(
+                         type="buttons",
+                         buttons=[dict(label="Play",
+                                       method="animate",
+                                       args=[None])])]
+                 ),
+                 frames=[go.Frame(data=data1),
+                         go.Frame(data=data2),
+                         go.Frame(data=data3)]
+                 )
     fig.update_layout({'showlegend': False})
     fig.update_xaxes(showgrid=False, zeroline=False, visible=False)
     fig.update_yaxes(showgrid=False, zeroline=False, visible=False)
@@ -144,6 +160,7 @@ def visualize_dataset(graph: Graph) -> None:
 
 
 def visualize_dataset_animate() -> None:
+    """Testing out plotly animations using frames"""
     # load the graph
     graph = data_processing.create_test_graph(20)
     graph_nx = graph.to_nx()
