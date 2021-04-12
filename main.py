@@ -34,4 +34,4 @@ def run_degrees_example_generated() -> None:
 
 if __name__ == '__main__':
     # visualize degree graph
-    run_degrees_example()
+    run_degrees_example_generated()
