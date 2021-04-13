@@ -17,7 +17,6 @@ import data_processing
 import dataclasses
 import visualization as vis
 from dataclasses import Graph
-from plotly.graph_objs import Scatter, Figure
 import plotly.graph_objects as go
 from typing import Optional
 
@@ -50,11 +49,11 @@ class Simulation:
         buffer_infected = set()
 
         # Renders the initial state frame
+        sliders_dict = {"steps": []}
         self._frames.append(vis.render_simulation_frame(self._graph, pos))
-        print(self._frames[0].data)
 
         # Loops for the amount of ticks, rendering each frame as it goes
-        for _ in range(ticks):
+        for i in range(ticks):
             # Updates the infected and
             infected = infected.union(buffer_infected)
             self._graph.set_infected(buffer_infected)
@@ -68,13 +67,12 @@ class Simulation:
                         buffer_infected.add(neighbour.identifier)
 
             # Renders the frame for the end of tick.
-            self._frames.append(vis.render_simulation_frame(self._graph, pos))
+            self._frames.append(vis.render_simulation_frame(self._graph, pos, i))
+            vis.update_slider(sliders_dict, i)
 
-        vis.render_simulation_full(self._frames)
+        vis.render_simulation_full(self._frames, sliders_dict)
 
 
 def determine_infected(edge_weight: float) -> bool:
     """Determine if neighbour becomes infected and set the person's infected bool accordingly."""
     return bool(random.choices([True, False], cum_weights=(edge_weight, 1-edge_weight)))
-
-
