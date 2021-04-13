@@ -3,7 +3,7 @@
 Module Description
 ==================
 Simulation Module
-This module contains ... # TODO: Finish this description
+This module contains ... epic gamer dabbing ! XD chug jug with me # TODO: Finish this description
 
 Copyright and Usage Information
 ===============================
@@ -37,20 +37,27 @@ class Simulation:
         self._init_infected = {random.choice(list(self._graph.get_people()))}
         self._frames = []
 
-    def run(self, ticks: int) -> None:
+    def run(self, ticks: int, with_degrees: bool = False) -> None:
         """Run the simulation for a given amount of ticks.
         """
-        # Establish
-        graph_nx = self._graph.to_nx()
-        pos = getattr(nx, 'spring_layout')(graph_nx)
         self._graph.set_infected(self._init_infected)
 
+        # Creates simulation buffer and infected sets.
         infected = self._init_infected
         buffer_infected = set()
 
+        if with_degrees:
+            self._graph.recalculate_degrees()
+            graph_nx = self._graph.to_nx_with_degree_colour()
+        else:
+            graph_nx = self._graph.to_nx_with_simulation_colour()
+
+        # Establishes a shared position of all notes in plotly pre-simulation
+        pos = getattr(nx, 'spring_layout')(graph_nx)
+
         # Renders the initial state frame
         sliders_dict = {"steps": []}
-        self._frames.append(vis.render_simulation_frame(self._graph, pos))
+        self._frames.append(vis.render_simulation_frame(self._graph, pos, 0, with_degrees))
 
         # Loops for the amount of ticks, rendering each frame as it goes
         for i in range(ticks):
@@ -66,8 +73,11 @@ class Simulation:
                     if result:
                         buffer_infected.add(neighbour.identifier)
 
+            if with_degrees:
+                self._graph.recalculate_degrees()
+
             # Renders the frame for the end of tick.
-            self._frames.append(vis.render_simulation_frame(self._graph, pos, i))
+            self._frames.append(vis.render_simulation_frame(self._graph, pos, i, with_degrees))
             vis.update_slider(sliders_dict, i)
 
         vis.render_simulation_full(self._frames, sliders_dict)

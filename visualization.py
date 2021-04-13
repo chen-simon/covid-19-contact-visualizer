@@ -190,11 +190,15 @@ def visualize_dataset_animate() -> None:
     fig.show()
 
 
-def render_simulation_frame(graph: Graph, pos: list, num: int = 0) -> go.Frame:
+def render_simulation_frame(graph: Graph, pos: list, num: int = 0,
+                            with_degrees: bool = False) -> go.Frame:
     """ Return a plotly graph object Frame given a graph and the positions of each person on the
     rendered graph.
     """
-    graph_nx = graph.to_nx_with_simulation_colour()
+    if with_degrees:
+        graph_nx = graph.to_nx_with_degree_colour()
+    else:
+        graph_nx = graph.to_nx_with_simulation_colour()
 
     # create frame
     colours = [graph_nx.nodes[node]['colour'] for node in graph_nx.nodes]
