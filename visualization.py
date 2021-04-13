@@ -9,6 +9,8 @@ Copyright and Usage Information
 ===============================
 This file is Copyright (c) 2021 Simon Chen, Patricia Ding, Salman Husainie, Makayla Duffus
 """
+from typing import Optional
+
 import networkx as nx
 from dataclasses import Graph
 from plotly.graph_objs import Scatter, Figure
@@ -191,14 +193,15 @@ def visualize_dataset_animate() -> None:
 
 
 def render_simulation_frame(graph: Graph, pos: list, num: int = 0,
-                            with_degrees: bool = False) -> go.Frame:
+                            with_degrees: bool = False,
+                            buffer: Optional[set[str]] = None) -> go.Frame:
     """ Return a plotly graph object Frame given a graph and the positions of each person on the
     rendered graph.
     """
     if with_degrees:
         graph_nx = graph.to_nx_with_degree_colour()
     else:
-        graph_nx = graph.to_nx_with_simulation_colour()
+        graph_nx = graph.to_nx_with_simulation_colour(buffer)
 
     # create frame
     colours = [graph_nx.nodes[node]['colour'] for node in graph_nx.nodes]

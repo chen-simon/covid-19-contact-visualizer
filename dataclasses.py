@@ -221,7 +221,7 @@ class Graph:
 
         return graph_nx
 
-    def to_nx_with_simulation_colour(self) -> nx.Graph:
+    def to_nx_with_simulation_colour(self, buffer: Optional[set[str]] = None) -> nx.Graph:
         """Return a networkx Graph representing self. This function also sets an additional
         attribute, 'colour', for each node in the networkx graph.
         """
@@ -229,8 +229,15 @@ class Graph:
 
         for p in self._people.values():
             graph_nx.add_node(p.name)  # add node for each person
-            node_colour = colour.rgb_to_str(colour.INFECTED_COLOUR) if p.infected else 'rgb(255, ' \
-                                                                                       '255, 255) '
+
+            # EXPLICIT COLOURING... MAYBE PUT IN colouring.py LATER?
+            node_colour = 'rgb(255, 255, 255)'
+            if p.infected:
+                node_colour = colour.rgb_to_str(colour.INFECTED_COLOUR)
+            elif buffer and p in buffer:
+                print('e')
+                node_colour = colour.rgb_to_str(colour.BUFFER_COLOUR)
+
             graph_nx.nodes[p.name]['colour'] = node_colour
 
             for u in p.neighbours:

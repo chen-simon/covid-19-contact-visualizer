@@ -77,7 +77,8 @@ class Simulation:
                 self._graph.recalculate_degrees()
 
             # Renders the frame for the end of tick.
-            self._frames.append(vis.render_simulation_frame(self._graph, pos, i, with_degrees))
+            frame = vis.render_simulation_frame(self._graph, pos, i, with_degrees, buffer_infected)
+            self._frames.append(frame)
             vis.update_slider(sliders_dict, i)
 
         vis.render_simulation_full(self._frames, sliders_dict)
