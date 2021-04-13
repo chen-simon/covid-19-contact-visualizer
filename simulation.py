@@ -85,4 +85,4 @@ class Simulation:
 
 def determine_infected(edge_weight: float) -> bool:
     """Determine if neighbour becomes infected and set the person's infected bool accordingly."""
-    return bool(random.choices([True, False], cum_weights=(edge_weight, 1-edge_weight)))
+    return random.choices([True, False], weights=(edge_weight, 1-edge_weight))[0]
