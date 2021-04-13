@@ -229,7 +229,8 @@ class Graph:
 
         for p in self._people.values():
             graph_nx.add_node(p.name)  # add node for each person
-            node_colour = colour.rgb_to_str(colour.INFECTED_COLOUR) if p.infected else 'rgb(255, 255, 255)'
+            node_colour = colour.rgb_to_str(colour.INFECTED_COLOUR) if p.infected else 'rgb(255, ' \
+                                                                                       '255, 255) '
             graph_nx.nodes[p.name]['colour'] = node_colour
 
             for u in p.neighbours:
