@@ -12,8 +12,16 @@ This file is Copyright (c) 2021 Simon Chen, Patricia Ding, Salman Husainie, Maka
 import visualization
 import data_processing
 import random
+# import menu
 from simulation import Simulation
 
+
+def open_gui_menu() -> None:
+    """ Opens the a Pygame-based GUI Menu that allows easy selection of the functionality of the
+    projects features
+    """
+    # menu.whatever_patricia_called_it()
+    pass
 
 def run_degrees_example() -> None:
     """ Run the example degrees risk visualization using the sample graph of people.
@@ -36,7 +44,6 @@ def run_degrees_example_generated() -> None:
 def run_simulation_example() -> None:
     """ Run the example simulation using the sample graph of people.
     """
-    # graph = data_processing.load_graph_csv('data/persons.csv', 'data/connections.csv')
     sim = Simulation()
     sim.run(10)
 
@@ -44,7 +51,6 @@ def run_simulation_example() -> None:
 def run_simulation_example_with_degrees_preview() -> None:
     """ Run the example simulation using the sample graph of people, using the degree preview.
     """
-    # graph = data_processing.load_graph_csv('data/persons.csv', 'data/connections.csv')
     sim = Simulation()
     sim.run(12, with_degrees=True)
 
