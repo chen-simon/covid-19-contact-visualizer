@@ -287,3 +287,75 @@ def render_simulation_full(frames: list[go.Frame], sliders_dict: dict, num_nodes
     fig.update_yaxes(showgrid=False, zeroline=False, visible=False)
 
     fig.show()
+
+def visualize_empty() -> None:
+    # load the graph
+    graph = data_processing.generate_connected_graph(20)
+    graph_nx = graph.to_nx()
+
+    # i think this generates the positions randomly for each node according to the given layout
+    # the layout is algorithm used by networkx
+    pos = getattr(nx, 'spring_layout')(graph_nx)
+
+    # put positions of nodes into lists
+    x_values = [pos[k][0] for k in graph_nx.nodes]
+    y_values = [pos[k][1] for k in graph_nx.nodes]
+    labels = list(graph_nx.nodes)
+
+    # set colours of nodes
+    colours1 = ['rgb(255, 255, 255)' for _ in range(len(graph_nx.nodes))]
+
+    # put positions of edges into lists
+    x_edges = []
+    y_edges = []
+    for edge in graph_nx.edges:
+        x_edges += [pos[edge[0]][0], pos[edge[1]][0], None]
+        y_edges += [pos[edge[0]][1], pos[edge[1]][1], None]
+
+    # create the edges in plotly
+    trace3 = Scatter(x=x_edges,
+                     y=y_edges,
+                     mode='lines',
+                     name='edges',
+                     line=dict(width=2,
+                               color='rgb(0, 0, 0)'),
+                     hoverinfo='none',
+                     )
+
+    # create the nodes in plotly
+    trace4 = Scatter(x=x_values,
+                     y=y_values,
+                     mode='markers',
+                     name='nodes',
+                     marker=dict(symbol='circle-dot',
+                                 size=50,
+                                 color=colours1,
+                                 line=dict(width=0.5)
+                                 ),
+                     text=labels,
+                     hovertemplate='%{text}',
+                     hoverlabel={'namelength': 0}
+                     )
+
+
+    # add these nodes and edges to the figure and show the graph
+    data1 = [trace3, trace4]
+
+    fig = Figure(data=data1,
+                 layout=go.Layout(
+                     xaxis=dict(range=[0, 5], autorange=False),
+                     yaxis=dict(range=[0, 5], autorange=False),
+                     title="Start Title",
+                     updatemenus=[dict(
+                         type="buttons",
+                         buttons=[dict(label="Play",
+                                       method="animate",
+                                       args=[None])])]
+                 ),
+
+                 )
+    fig.update_layout({'showlegend': False})
+    fig.update_xaxes(showgrid=False, zeroline=False, visible=False)
+    fig.update_yaxes(showgrid=False, zeroline=False, visible=False)
+
+    fig.show()

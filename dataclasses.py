@@ -194,6 +194,7 @@ class Graph:
 
     def to_nx(self) -> nx.Graph:
         """ Return a networkx Graph representing self."""
+
         graph_nx = nx.Graph()
         for p in self._people.values():
             graph_nx.add_node(p.name, colour='rgb(155, 234, 58)')  # add node for each person
@@ -225,6 +226,7 @@ class Graph:
         """Return a networkx Graph representing self. This function also sets an additional
         attribute, 'colour', for each node in the networkx graph.
         """
+
         graph_nx = nx.Graph()
 
         for p in self._people.values():
