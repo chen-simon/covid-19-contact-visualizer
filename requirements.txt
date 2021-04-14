@@ -4,3 +4,5 @@
 networkx
 plotly
 matplotlib
+numpy
+ipywidgets

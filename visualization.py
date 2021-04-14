@@ -13,6 +13,7 @@ import networkx as nx
 from dataclasses import Graph
 from plotly.graph_objs import Scatter, Figure
 import data_processing
+import numpy as np
 import plotly.graph_objects as go
 
 
@@ -188,6 +189,31 @@ def visualize_dataset_animate() -> None:
     fig.update_yaxes(showgrid=False, zeroline=False, visible=False)
 
     fig.show()
+
+
+def await_input() -> None:
+    """ Create a click listener for a networkx/plotly graph.
+    """
+    f = go.FigureWidget([go.Scatter(x=x, y=y, mode='markers')])
+
+    scatter = f.data[0]
+    colors = ['#a3a7e4'] * 100
+    scatter.marker.color = colors
+    scatter.marker.size = [10] * 100
+    f.layout.hovermode = 'closest'
+
+    # create our callback function
+    def update_point(trace, points, selector):
+        c = list(scatter.marker.color)
+        s = list(scatter.marker.size)
+        for i in points.point_inds:
+            c[i] = '#bae2be'
+            s[i] = 20
+            with f.batch_update():
+                scatter.marker.color = c
+                scatter.marker.size = s
+
+    scatter.on_click(update_point)
 
 
 def render_simulation_frame(graph: Graph, pos: list, num: int = 0,
