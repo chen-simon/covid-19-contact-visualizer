@@ -65,13 +65,10 @@ def generate_connected_graph(n: int, level: str = 'medium') -> Graph:
     graph = Graph()
 
     # Add n _Person objects with randomly generated attributes to the graph
-    for i in range(0, n):
-        identity, name = _generate_id_and_name()
-        if name in graph.get_names():
-            i -= 1
-        else:
-            people.append(identity)
-            graph.add_vertex(identity, name, random.randint(18, 55), random.uniform(0, 1))
+    for _ in range(0, n):
+        identity, name = _generate_id_and_name(graph)
+        people.append(identity)
+        graph.add_vertex(identity, name, random.randint(18, 55), random.uniform(0, 1))
 
     remaining, visited = set(people), set()
 
@@ -123,14 +120,14 @@ def generate_disconnected_graph(n: int, level: str = 'medium') -> Graph:
 
     # Add num_of_disconnected _Person objects with randomly generated information to the graph
     for _ in range(0, num_of_disconnected):
-        identity, name = _generate_id_and_name()
+        identity, name = _generate_id_and_name(graph)
         loner.append(identity)
         graph.add_vertex(identity, name, random.randint(18, 55), get_leveled_weight(level))
 
     times = random.randint(0, num_of_disconnected // 2)
-    # number of times connections between loners will be made
+    # Number of times connections between lone _Person objects will be made
 
-    # Adds random edges between items in loner list
+    # Adds random edges between lone _Person objects
     for _ in range(times):
         to_be_connected = _random_list_of_two(loner)
         graph.add_edge(to_be_connected[0], to_be_connected[1], get_leveled_weight(level))
@@ -154,15 +151,19 @@ def _random_list_of_two(people: List[str]) -> List[str]:
         return _random_list_of_two(people)
 
 
-def _generate_id_and_name() -> Tuple[str, str]:
+def _generate_id_and_name(graph: Graph) -> Tuple[str, str]:
     """ Return a tuple containing the following strings:
             1. A 6-digit id composed of uppercase ASCII letters and numbers for a _Person object.
             2. The initials for the name attribute of a _Person object.
     """
     id_chars = string.ascii_uppercase + string.digits
     name_chars = string.ascii_uppercase
-    return (''.join(random.choice(id_chars) for _ in range(6)), random.choice(name_chars) + '. ' +
-            random.choice(name_chars))
+    id_and_name = (''.join(random.choice(id_chars) for _ in range(6)), random.choice(name_chars) +
+                   '. ' + random.choice(name_chars))
+    if id_and_name[0] in graph.get_names():
+        return _generate_id_and_name(graph)
+    else:
+        return id_and_name
 
 
 def get_leveled_weight(level: str) -> float:
