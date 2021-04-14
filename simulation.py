@@ -80,7 +80,7 @@ class Simulation:
             self._frames.append(vis.render_simulation_frame(self._graph, pos, i, with_degrees))
             vis.update_slider(sliders_dict, i)
 
-        vis.render_simulation_full(self._frames, sliders_dict)
+        vis.render_simulation_full(self._frames, sliders_dict, len(graph_nx.nodes))
 
 
 def determine_infected(edge_weight: float) -> bool:

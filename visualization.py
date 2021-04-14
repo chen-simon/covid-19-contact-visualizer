@@ -202,6 +202,7 @@ def render_simulation_frame(graph: Graph, pos: list, num: int = 0,
 
     # create frame
     colours = [graph_nx.nodes[node]['colour'] for node in graph_nx.nodes]
+    num_infected = colours.count('rgb(255, 0, 0)')
     x_values = [pos[k][0] for k in graph_nx.nodes]
     y_values = [pos[k][1] for k in graph_nx.nodes]
     labels = list(graph_nx.nodes)
@@ -237,39 +238,47 @@ def render_simulation_frame(graph: Graph, pos: list, num: int = 0,
                      hoverlabel={'namelength': 0}
                      )
 
-    return go.Frame(data=[trace3, trace4], name=num)
+    return go.Frame(data=[trace3, trace4], layout={"title": 'Number of People Infected: '
+                                    + str(num_infected) + '/' + str(len(graph_nx.nodes))}, name=num)
 
 
 def update_slider(sliders_dict: dict, num: int = 0) -> None:
     """Updates slider_dict for the layout of plotly figure"""
 
-    slider_step = {"args": [[num], {"frame": {"duration": 700, "redraw": False},
+    slider_step = {"args": [[num], {"frame": {"duration": 700, "redraw": True},
                                     "mode": "immediate",
-                                    "transition": {"duration": 100}}], "label": 'Week ' + str(num),
+                                    "transition": {"duration": 100},
+                                    }],
+                   "label": 'Week ' + str(num),
                    "method": "animate"}
+
     sliders_dict["steps"].append(slider_step)
 
 
-def render_simulation_full(frames: list[go.Frame], sliders_dict: dict) -> None:
+def render_simulation_full(frames: list[go.Frame], sliders_dict: dict, num_nodes: int) -> None:
     fig = Figure(data=frames[0].data,
                  layout=go.Layout(
                      xaxis=dict(range=[0, 5], autorange=False),
                      yaxis=dict(range=[0, 5], autorange=False),
-                     title="Start Title",
+                     title='Number of People Infected: 1/' + str(num_nodes),
                      updatemenus=[dict(
                          type="buttons",
                          buttons=[dict(label="Play",
                                        method="animate",
-                                       args=[None, {"frame": {"duration": 700, "redraw": False},
+                                       args=[None, {"frame": {"duration": 700, "redraw": True},
                                                     "fromcurrent": True}]),
 
                                   dict(label="Pause",
                                        method="animate",
-                                       args=[[None], {"frame": {"duration": 0, "redraw": False},
+                                       args=[[None], {"frame": {"duration": 0, "redraw": True},
                                                       "mode": "immediate",
-                                                    "transition": {"duration": 0}}])
+                                                    "transition": {"duration": 0}  }])
                                   ])],
-                     sliders=[sliders_dict]),
+                     sliders=[sliders_dict],
+
+
+                 ),
+
                  frames=frames
                  )
 
