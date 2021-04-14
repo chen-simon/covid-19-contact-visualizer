@@ -261,8 +261,8 @@ def render_simulation_full(frames: list[go.Frame], sliders_dict: dict, num_nodes
     """
     fig = Figure(data=frames[0].data,
                  layout=go.Layout(
-                     xaxis=dict(range=[0, 5], autorange=False),
-                     yaxis=dict(range=[0, 5], autorange=False),
+                     xaxis=dict(range=[0, 5], autorange=True),
+                     yaxis=dict(range=[0, 5], autorange=True),
                      title='Number of People Infected: 1/' + str(num_nodes),
                      updatemenus=[dict(
                          type="buttons",
