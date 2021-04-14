@@ -65,10 +65,13 @@ def generate_connected_graph(n: int, level: str = 'medium') -> Graph:
     graph = Graph()
 
     # Add n _Person objects with randomly generated attributes to the graph
-    for _ in range(0, n):
+    for i in range(0, n):
         identity, name = _generate_id_and_name()
-        people.append(identity)
-        graph.add_vertex(identity, name, random.randint(18, 55), random.uniform(0, 1))
+        if name in graph.get_names():
+            i -= 1
+        else:
+            people.append(identity)
+            graph.add_vertex(identity, name, random.randint(18, 55), random.uniform(0, 1))
 
     remaining, visited = set(people), set()
 

@@ -114,7 +114,7 @@ class Graph:
         """Initialize an empty graph."""
         self._people = {}
 
-    def get_people(self):
+    def get_people(self) -> Dict[str, _Person]:
         """ Return a __ of all the people"""
         return self._people
 
@@ -125,6 +125,16 @@ class Graph:
     def get_weight(self, person1: Any, person2: Any) -> float:
         """Return the weight between person1 and person2"""
         return self._people[person1].neighbours[person2]
+
+    def get_names(self) -> set[str]:
+        """Return a set containing the names of every _Person object in this graph.
+        """
+        names_so_far = set()
+
+        for person in self._people:
+            names_so_far.add(self._people[person].name)
+
+        return names_so_far
 
     def add_vertex(self, identifier: str, name: str, age: int, severity_level: float) -> None:
         """Add a vertex with the given identifier, name, age, and severity level to this graph.
