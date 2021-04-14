@@ -239,7 +239,8 @@ def render_simulation_frame(graph: Graph, pos: list, num: int = 0,
                      )
 
     return go.Frame(data=[trace3, trace4], layout={"title": 'Number of People Infected: '
-                                    + str(num_infected) + '/' + str(len(graph_nx.nodes))}, name=num)
+                                                            + str(num_infected) + '/' +
+                                                            str(len(graph_nx.nodes))}, name=num)
 
 
 def update_slider(sliders_dict: dict, num: int = 0) -> None:
@@ -256,6 +257,8 @@ def update_slider(sliders_dict: dict, num: int = 0) -> None:
 
 
 def render_simulation_full(frames: list[go.Frame], sliders_dict: dict, num_nodes: int) -> None:
+    """Creates the entire simulation.
+    """
     fig = Figure(data=frames[0].data,
                  layout=go.Layout(
                      xaxis=dict(range=[0, 5], autorange=False),
@@ -272,10 +275,9 @@ def render_simulation_full(frames: list[go.Frame], sliders_dict: dict, num_nodes
                                        method="animate",
                                        args=[[None], {"frame": {"duration": 0, "redraw": True},
                                                       "mode": "immediate",
-                                                    "transition": {"duration": 0}  }])
+                                                      "transition": {"duration": 0}}])
                                   ])],
                      sliders=[sliders_dict],
-
 
                  ),
 

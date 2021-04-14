@@ -65,10 +65,13 @@ def generate_connected_graph(n: int, level: str = 'medium') -> Graph:
     graph = Graph()
 
     # Add n _Person objects with randomly generated attributes to the graph
-    for _ in range(0, n):
+    for i in range(0, n):
         identity, name = _generate_id_and_name()
-        people.append(identity)
-        graph.add_vertex(identity, name, random.randint(18, 55), random.uniform(0, 1))
+        if name in graph.get_names():
+            i -= 1
+        else:
+            people.append(identity)
+            graph.add_vertex(identity, name, random.randint(18, 55), random.uniform(0, 1))
 
     remaining, visited = set(people), set()
 
@@ -90,6 +93,7 @@ def generate_connected_graph(n: int, level: str = 'medium') -> Graph:
 
         current_person = new_neighbor   # Move on to the next person
 
+    # Adding edges until max edge number is met
     while edges_so_far < edges:
         # Checking in case person_1 and person_2 are the same person
         person_1, person_2 = random.choice(people), random.choice(people)
