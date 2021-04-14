@@ -23,6 +23,7 @@ def open_gui_menu() -> None:
     # menu.whatever_patricia_called_it()
     pass
 
+
 def run_degrees_example() -> None:
     """ Run the example degrees risk visualization using the sample graph of people.
     """
