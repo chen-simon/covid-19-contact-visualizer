@@ -23,18 +23,28 @@ from typing import Optional
 
 class Simulation:
     """ A simulation of the graph over time.
+
+    Instance Attributes:
+        - _graph: The graph this simulation is representing.
+        - _frames: A list of Plotly graph object frames
+            (each frame represents one week in simulation time).
+        - _init_infected: The set of initially infected people
+        - _num_infected: The number of people who are initially infected
     """
     _graph: dataclasses.Graph
     _frames: list[go.Frame]
     _init_infected: set[str]
+    _num_infected: int
 
-    def __init__(self, graph: Optional[Graph] = None):
+    def __init__(self, graph: Optional[Graph] = None, num_infected: int = 1):
         if graph is not None:
             self._graph = graph
         else:
             self._graph = data_processing.generate_connected_graph(50)
-
-        self._init_infected = {random.choice(list(self._graph.get_people()))}
+        self._num_infected = num_infected
+        self._init_infected = set()
+        for _ in range(0, self._num_infected):
+            self._init_infected.add(random.choice(list(self._graph.get_people())))
         self._frames = []
 
     def run(self, ticks: int, with_degrees: bool = False) -> None:
