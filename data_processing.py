@@ -80,7 +80,7 @@ def generate_connected_graph(n: int, level: str = 'medium') -> Graph:
     edges_so_far = 0
 
     while remaining != set():
-        new_neighbor = random.choice(people)    # Check if error
+        new_neighbor = random.choice(people)
 
         if new_neighbor not in visited:
             graph.add_edge(current_person, new_neighbor, get_leveled_weight(level))
@@ -124,8 +124,8 @@ def generate_disconnected_graph(n: int, level: str = 'medium') -> Graph:
         loner.append(identity)
         graph.add_vertex(identity, name, random.randint(18, 55), get_leveled_weight(level))
 
-    times = random.randint(0, num_of_disconnected // 2)
     # Number of times connections between lone _Person objects will be made
+    times = random.randint(0, num_of_disconnected // 2)
 
     # Adds random edges between lone _Person objects
     for _ in range(times):
@@ -160,7 +160,9 @@ def _generate_id_and_name(graph: Graph) -> Tuple[str, str]:
     name_chars = string.ascii_uppercase
     id_and_name = (''.join(random.choice(id_chars) for _ in range(6)), random.choice(name_chars) +
                    '. ' + random.choice(name_chars))
+
     if id_and_name[1] in graph.get_names():
+        # If the name is already present in the graph, run the function again
         return _generate_id_and_name(graph)
     else:
         return id_and_name

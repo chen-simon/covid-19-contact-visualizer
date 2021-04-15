@@ -3,7 +3,7 @@
 Module Description
 ==================
 Main Module
-This module runs the entire COVID-19 Contact Visualizer. # TODO: Make this better after done.
+This module contains the runner functions that create the COVID-19 Contact Tracing simulation.
 
 Copyright and Usage Information
 ===============================
@@ -18,15 +18,15 @@ import menu
 
 
 def open_gui_menu() -> None:
-    """ Opens the a Pygame-based GUI Menu that allows easy selection of the functionality of the
-    projects features
+    """ Opens a Pygame-based GUI Menu that allows easy selection of the functionality of the
+    projects features.
     """
-    # menu.whatever_patricia_called_it()
-    pass
+    menu.run_interface()
 
 
 def run_degrees_example() -> None:
-    """ Run the example degrees risk visualization using the sample graph of people.
+    """ Run the example degrees risk visualization using a graph of people loaded from
+    a csv file.
     """
     graph = data_processing.load_graph_csv('data/persons.csv', 'data/connections.csv')
     init_infected = {'WJ5751'}
@@ -35,7 +35,8 @@ def run_degrees_example() -> None:
 
 
 def run_degrees_example_generated() -> None:
-    """ Run the example degrees risk visualization using the sample graph of people.
+    """ Run the example degrees risk visualization using a randomly generated graph of
+    50 people.
     """
     graph = data_processing.generate_connected_graph(50)
     init_infected = {random.choice(list(graph.get_people()))}
@@ -51,11 +52,11 @@ def run_simulation_example(sim_conditions: Tuple[int, str, int, str]) -> None:
 
 
 def run_simulation_example_with_degrees_preview(sim_conditions: Tuple[int, str, int, str]) -> None:
-    """ Run the example simulation using the sample graph of people, using the degree preview.
+    """ Run the example simulation using the sample graph of people, and the degree preview.
     """
     sim = Simulation(sim_conditions)
     sim.run(21, with_degrees=True)
 
 
 if __name__ == '__main__':
-    menu.run_interface()
+    open_gui_menu()

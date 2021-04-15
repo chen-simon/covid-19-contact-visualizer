@@ -3,7 +3,7 @@
 Module Description
 ==================
 Simulation Module
-This module contains ... epic gamer dabbing ! XD chug jug with me # TODO: Finish this description
+This module contains the dataclass for the simulation.
 
 Copyright and Usage Information
 ===============================
@@ -26,8 +26,8 @@ class Simulation:
         - _graph: The graph this simulation is representing.
         - _frames: A list of Plotly graph object frames
             (each frame represents one week in simulation time).
-        - _init_infected: The set of initially infected people
-        - _num_infected: The number of people who are initially infected
+        - _init_infected: The set of initially infected people.
+        - _num_infected: The number of people who are initially infected.
     """
     _graph: dataclasses.Graph
     _frames: list[go.Frame]
@@ -35,24 +35,22 @@ class Simulation:
     _num_infected: int
 
     def __init__(self, conditions: Tuple[int, str, int, str], graph: Optional[Graph] = None):
-        """Initialize the values in this simulation
+        """ Initialize the values in this simulation.
 
-            - conditions[0] is the number of people in this simulation
-            - conditions[1] is the level of contact between people (edge weights)
-            - conditions[2] is the number of initially infected people
-            - conditions[3] is whether the graph is connected
+            Parameter Description:
+                - conditions[0] is the number of people in this simulation
+                - conditions[1] is the level of contact between people (edge weights)
+                - conditions[2] is the number of initially infected people
+                - conditions[3] is whether the graph is connected
         """
         if graph is not None:
-            # decide what to do later here
             self._graph = graph
-            self._init_infected = {random.choice(list(self._graph.get_people()))}
         elif conditions[3] == 'yes':
             self._graph = data_processing.generate_connected_graph(conditions[0], conditions[1])
         else:
-
             self._graph = data_processing.generate_disconnected_graph(conditions[0], conditions[1])
 
-        # what to do if graph is none?
+        # Setting the initially infected people
         self._num_infected = conditions[2]
         self._init_infected = set()
         for _ in range(0, self._num_infected):
@@ -61,7 +59,7 @@ class Simulation:
         self._frames = []
 
     def run(self, ticks: int, with_degrees: bool = False) -> None:
-        """Run the simulation for a given amount of ticks.
+        """ Run the simulation for a given amount of ticks.
         """
         self._graph.set_infected(self._init_infected)
 
@@ -107,5 +105,6 @@ class Simulation:
 
 
 def determine_infected(edge_weight: float) -> bool:
-    """Determine if neighbour becomes infected and set the person's infected bool accordingly."""
+    """ Determine if neighbour becomes infected and set the person's infected bool accordingly.
+    """
     return random.choices([True, False], weights=(edge_weight, 1-edge_weight))[0]

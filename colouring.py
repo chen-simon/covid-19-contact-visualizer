@@ -3,7 +3,8 @@
 Module Description
 ==================
 Colouring Module
-This module contains the functions used to calculate the colours for the contact visualization.
+This module contains the functions used to calculate and update the colours for the contact
+visualization.
 
 Copyright and Usage Information
 ===============================
@@ -25,8 +26,8 @@ OFFSET = math.log(MIN_FILL)  # for the degrees apart exponential curve
 
 @cache  # To avoid unnecessary re-calculations
 def degrees_apart_get_colour(degrees_apart: Optional[int]) -> Tuple[int, int, int]:
-    """ Given a degrees_apart, return the appropriate colour of the person. The colour calculation
-    is an exponential decay function.
+    """ Given a degrees_apart, return the appropriate colour of the person.
+    The colour calculation is an exponential decay function.
     """
     # Hard coded base case degree colours
     if degrees_apart is None:

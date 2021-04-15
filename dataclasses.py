@@ -16,19 +16,19 @@ import networkx as nx
 
 
 class _Person:
-    """A person who undergoes contact tracing. Represents a vertex in a graph.
+    """ A person who undergoes contact tracing. Represents a vertex in a graph.
 
         Instance Attributes:
-            - identifier: The unique identifier of the person
-            - name: The person's first and last name
-            - age: The person's age
+            - identifier: The unique identifier of the person.
+            - name: The person's first and last name.
+            - age: The person's age.
             - severity_level: The severity of COVID-19 the person would experience if they develop
-              the illness
-            - infected: True if the person has developed COVID-19, false otherwise.
-            - neighbours: People in this person's social circle, and their corresponding level of
-              contact with this person
+              the illness.
+            - infected: True if the person has developed COVID-19, False otherwise.
+            - neighbours: The people in this person's social circle, and their corresponding level
+              of contact with this person. Maps _Person object to their contact level to self.
             - degrees_apart: The degree of separation between this person and an infected person in
-            Degree Mode
+              Degree Mode.
 
         Representation Invariants:
             - self not in self.neighbours
@@ -45,7 +45,7 @@ class _Person:
     degrees_apart: Optional[int] = None
 
     def __init__(self, identifier: str, name: str, age: int, severity_level: float) -> None:
-        """Initialize a new person vertex with the given name, identifier, age, and severity level.
+        """ Initialize a new person vertex with the given name, identifier, age, and severity level.
         """
         self.identifier = identifier
         self.name = name
@@ -56,18 +56,15 @@ class _Person:
 
     # BASIC METHODS
     def change_infection_status(self) -> None:
-        """Reverses the current infection status of the person."""
+        """ Reverses the current infection status of the person."""
         self.infected = not self.infected
 
     # DEGREE CALCULATION
     def calculate_degrees_apart(self, curr_degree: int, visited: set,
                                 init_call: bool = True) -> None:
-        """Update degrees_apart for all the people this person is connected to,
+        """ Update degrees_apart for all the people this person is connected to,
         where degrees_apart is the smallest degree apart between this person and an infected
         person.
-
-        Max degree is the max depth that the recursive call will search, to avoid large calculations
-        for large graphs.
         """
         # This will ensure that degrees_apart is always calculating the smallest degree between
         # an infected person.
@@ -83,7 +80,7 @@ class _Person:
                 person.calculate_degrees_apart(curr_degree + 1, visited.copy(), False)
 
     def get_degree(self) -> int:
-        """Return smallest degree apart from an infected vertex. Raise ValueError if has not
+        """ Return smallest degree apart from an infected vertex. Raise ValueError if has not
         been calculated yet.
         """
         if self.degrees_apart is not None:
@@ -91,7 +88,7 @@ class _Person:
         raise ValueError
 
     def reset_degree(self, zero: Optional[bool] = False) -> None:
-        """Resets the degrees_apart attribute to None to represent an uncalculated value.
+        """ Resets the degrees_apart attribute to None to represent an uncalculated value.
         If zero is true, set it to 0 instead.
         """
         if zero:
@@ -101,7 +98,7 @@ class _Person:
 
 
 class Graph:
-    """A weighted graph used to represent a network of people that keeps track of the level of
+    """ A weighted graph used to represent a network of people that keeps track of the level of
     contact between any two people.
     """
     # Private Instance Attributes:
@@ -111,7 +108,7 @@ class Graph:
     _people: Dict[str, _Person]
 
     def __init__(self) -> None:
-        """Initialize an empty graph."""
+        """ Initialize an empty graph."""
         self._people = {}
 
     def get_people(self) -> Dict[str, _Person]:
@@ -119,15 +116,15 @@ class Graph:
         return self._people
 
     def get_neighbours(self, item: Any):
-        """Return the neighbours of this person"""
+        """ Return the neighbours of this person"""
         return list(self._people[item].neighbours)
 
     def get_weight(self, person1: Any, person2: Any) -> float:
-        """Return the weight between person1 and person2"""
+        """ Return the weight between person1 and person2"""
         return self._people[person1].neighbours[person2]
 
     def get_names(self) -> set[str]:
-        """Return a set containing the names of every _Person object in this graph.
+        """ Return a set containing the names of every _Person object in this graph.
         """
         names_so_far = set()
 
@@ -137,13 +134,13 @@ class Graph:
         return names_so_far
 
     def add_vertex(self, identifier: str, name: str, age: int, severity_level: float) -> None:
-        """Add a vertex with the given identifier, name, age, and severity level to this graph.
+        """ Add a vertex with the given identifier, name, age, and severity level to this graph.
         """
         if identifier not in self._people:
             self._people[identifier] = _Person(identifier, name, age, severity_level)
 
     def add_edge(self, identifier1: str, identifier2: str, contact_level: float) -> None:
-        """Add an edge between two people with the given identifiers in this graph, with the given
+        """ Add an edge between two people with the given identifiers in this graph, with the given
         weight, representing their level of contact.
 
         Raise a ValueError if identifier1 or identifier2 are not vertices in this graph.
@@ -179,9 +176,6 @@ class Graph:
 
     def recalculate_degrees(self) -> None:
         """ Recalculates the degrees_apart attribute for each connected person to an infected.
-
-        Max degree is the max depth the recursive call will calculate in order to avoid large
-        calculations on large graphs.
         """
         self._reset_degrees()
 
@@ -216,7 +210,7 @@ class Graph:
         return graph_nx
 
     def to_nx_with_degree_colour(self) -> nx.Graph:
-        """Return a networkx Graph representing self. This function also sets an additional
+        """ Return a networkx Graph representing self. This function also sets an additional
         attribute, 'colour', for each node in the networkx graph.
         """
         graph_nx = nx.Graph()
@@ -233,10 +227,11 @@ class Graph:
         return graph_nx
 
     def to_nx_with_simulation_colour(self) -> nx.Graph:
-        """Return a networkx Graph representing self. This function also sets an additional
+        """ Return a networkx Graph representing self. This function also sets an additional
         attribute, 'colour', for each node in the networkx graph.
-        """
 
+        This function is used for the simulations.
+        """
         graph_nx = nx.Graph()
 
         for p in self._people.values():

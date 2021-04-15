@@ -1,10 +1,14 @@
-"""
-Interface Module
+"""CSC111 Project: COVID-19 Contact Visualizer
 
+Module Description
+==================
+Interface Module
 This module contains the functions that are needed to for the interface. The gui allows the user to
 adjust the variables for the prediction, then generate the graph.
 
-This file is Copyright (c) 2020 Patricia Ding, Makayla Duffus, Simon Chen, Salman Husainie.
+Copyright and Usage Information
+===============================
+This file is Copyright (c) 2021 Simon Chen, Patricia Ding, Salman Husainie, Makayla Duffus
 """
 import pygame
 import pygame_gui
