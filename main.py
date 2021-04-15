@@ -25,13 +25,29 @@ def open_gui_menu() -> None:
 
 
 def run_degrees_example() -> None:
-    """ Run the example degrees risk visualization using a graph of people loaded from
+    """ Run the example degrees risk visualization using the graph of people loaded from
     a csv file.
     """
     graph = data_processing.load_graph_csv('data/persons.csv', 'data/connections.csv')
     init_infected = {'WJ5751'}
 
     visualization.render_degrees_apart(graph, init_infected)
+
+
+def run_simulation_csv_example() -> None:
+    """ Run the example simulation using the graph of people loaded from a csv file.
+    The level of contact between the people is automatically set to 'medium'.
+    """
+    graph = data_processing.load_graph_csv('data/persons.csv', 'data/connections.csv')
+
+    # Update these conditions accordingly if sample datasets deviate from original
+    conditions = (len(graph.get_people()),  # Number of people in graph
+                  'medium',  # Contact level between people
+                  1,  # Number of initially infected people
+                  'no'  # Whether the graph is connected or not
+                  )
+    sim = Simulation(conditions, graph)
+    sim.run(10)
 
 
 def run_degrees_example_generated() -> None:
