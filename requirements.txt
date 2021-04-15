@@ -1,6 +1,6 @@
 # COVID-19 Contact Visualizer: External Python libraries we'll be using.
 
 # Graphics and Visualization
-networkx
-plotly
-matplotlib
+networkx~=2.5
+plotly~=4.14.3
+pygame~=2.0.1

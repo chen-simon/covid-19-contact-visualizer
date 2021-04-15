@@ -10,15 +10,13 @@ Copyright and Usage Information
 This file is Copyright (c) 2021 Simon Chen, Patricia Ding, Salman Husainie, Makayla Duffus
 """
 import random
-
 import networkx as nx
-
 import data_processing
 import dataclasses
 import visualization as vis
 from dataclasses import Graph
 import plotly.graph_objects as go
-from typing import Optional
+from typing import Optional, Tuple
 
 
 class Simulation:
@@ -28,13 +26,17 @@ class Simulation:
     _frames: list[go.Frame]
     _init_infected: set[str]
 
-    def __init__(self, graph: Optional[Graph] = None):
+    def __init__(self, conditions: Tuple[int, str, int, str], graph: Optional[Graph] = None):
         if graph is not None:
+            # decide what to do later here
             self._graph = graph
+            self._init_infected = {random.choice(list(self._graph.get_people()))}
+        elif conditions[3] == 'yes':
+            self._graph = data_processing.generate_connected_graph(conditions[0], conditions[1])
         else:
-            self._graph = data_processing.generate_connected_graph(50)
+            self._graph = data_processing.generate_disconnected_graph(conditions[0], conditions[1])
 
-        self._init_infected = {random.choice(list(self._graph.get_people()))}
+        self._init_infected = set(random.choices(list(self._graph.get_people()), k=conditions[2]))
         self._frames = []
 
     def run(self, ticks: int, with_degrees: bool = False) -> None:

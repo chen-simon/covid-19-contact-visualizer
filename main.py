@@ -9,10 +9,12 @@ Copyright and Usage Information
 ===============================
 This file is Copyright (c) 2021 Simon Chen, Patricia Ding, Salman Husainie, Makayla Duffus
 """
+from typing import Tuple
 import visualization
 import data_processing
 import random
 from simulation import Simulation
+import menu
 
 
 def run_degrees_example() -> None:
@@ -33,22 +35,19 @@ def run_degrees_example_generated() -> None:
     visualization.render_degrees_apart(graph, init_infected)
 
 
-def run_simulation_example() -> None:
+def run_simulation_example(sim_conditions: Tuple[int, str, int, str]) -> None:
     """ Run the example simulation using the sample graph of people.
     """
-    # graph = data_processing.load_graph_csv('data/persons.csv', 'data/connections.csv')
-    sim = Simulation()
+    sim = Simulation(sim_conditions)
     sim.run(10)
 
 
-def run_simulation_example_with_degrees_preview() -> None:
+def run_simulation_example_with_degrees_preview(sim_conditions: Tuple[int, str, int, str]) -> None:
     """ Run the example simulation using the sample graph of people, using the degree preview.
     """
-    # graph = data_processing.load_graph_csv('data/persons.csv', 'data/connections.csv')
-    sim = Simulation()
-    sim.run(12, with_degrees=True)
+    sim = Simulation(sim_conditions)
+    sim.run(21, with_degrees=True)
 
 
 if __name__ == '__main__':
-    # visualize degree graph
-    run_simulation_example()
+    menu.run_interface()

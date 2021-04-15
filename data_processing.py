@@ -160,7 +160,7 @@ def _generate_id_and_name(graph: Graph) -> Tuple[str, str]:
     name_chars = string.ascii_uppercase
     id_and_name = (''.join(random.choice(id_chars) for _ in range(6)), random.choice(name_chars) +
                    '. ' + random.choice(name_chars))
-    if id_and_name[0] in graph.get_names():
+    if id_and_name[1] in graph.get_names():
         return _generate_id_and_name(graph)
     else:
         return id_and_name
