@@ -96,7 +96,7 @@ def run_interface() -> None:
                     if event.ui_element == num_people_plus and variable_values[0] < 60:
                         change_interval(variable_values, people_change, 10, 0)
 
-                    elif event.ui_element == num_people_minus and variable_values[0] > 0:
+                    elif event.ui_element == num_people_minus and variable_values[0] > 10:
                         change_interval(variable_values, people_change, -10, 0)
 
                     elif event.ui_element == closeness_plus and variable_values[1] < 2:
@@ -163,4 +163,3 @@ def determine_step(dataset: int, variable_value: int) -> str:
             return 'no'
         else:
             return 'yes'
-
