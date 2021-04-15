@@ -34,11 +34,11 @@ def run_degrees_example() -> None:
     visualization.render_degrees_apart(graph, init_infected)
 
 
-def run_simulation_csv_example() -> None:
+def run_simulation_csv_example(persons_dataset: str, connections_dataset: str) -> None:
     """ Run the example simulation using the graph of people loaded from a csv file.
     The level of contact between the people is automatically set to 'medium'.
     """
-    graph = data_processing.load_graph_csv('data/persons.csv', 'data/connections.csv')
+    graph = data_processing.load_graph_csv(persons_dataset, connections_dataset)
 
     # Update these conditions accordingly if sample datasets deviate from original
     conditions = (len(graph.get_people()),  # Number of people in graph
@@ -47,7 +47,7 @@ def run_simulation_csv_example() -> None:
                   'no'  # Whether the graph is connected or not
                   )
     sim = Simulation(conditions, graph)
-    sim.run(10)
+    sim.run(10, with_degrees=True)
 
 
 def run_degrees_example_generated() -> None:
@@ -74,5 +74,5 @@ def run_simulation_example_with_degrees_preview(sim_conditions: Tuple[int, str, 
     sim.run(21, with_degrees=True)
 
 
-if __name__ == '__main__':
-    open_gui_menu()
+# if __name__ == '__main__':
+    # open_gui_menu()
