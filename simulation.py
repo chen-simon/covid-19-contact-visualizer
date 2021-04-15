@@ -21,12 +21,27 @@ from typing import Optional, Tuple
 
 class Simulation:
     """ A simulation of the graph over time.
+
+    Instance Attributes:
+        - _graph: The graph this simulation is representing.
+        - _frames: A list of Plotly graph object frames
+            (each frame represents one week in simulation time).
+        - _init_infected: The set of initially infected people
+        - _num_infected: The number of people who are initially infected
     """
     _graph: dataclasses.Graph
     _frames: list[go.Frame]
     _init_infected: set[str]
+    _num_infected: int
 
     def __init__(self, conditions: Tuple[int, str, int, str], graph: Optional[Graph] = None):
+        """Initialize the values in this simulation
+
+            - conditions[0] is the number of people in this simulation
+            - conditions[1] is the level of contact between people (edge weights)
+            - conditions[2] is the number of initially infected people
+            - conditions[3] is whether the graph is connected
+        """
         if graph is not None:
             # decide what to do later here
             self._graph = graph
@@ -34,9 +49,15 @@ class Simulation:
         elif conditions[3] == 'yes':
             self._graph = data_processing.generate_connected_graph(conditions[0], conditions[1])
         else:
+
             self._graph = data_processing.generate_disconnected_graph(conditions[0], conditions[1])
 
-        self._init_infected = set(random.choices(list(self._graph.get_people()), k=conditions[2]))
+        # what to do if graph is none?
+        self._num_infected = conditions[2]
+        self._init_infected = set()
+        for _ in range(0, self._num_infected):
+            self._init_infected.add(random.choice(list(self._graph.get_people())))
+
         self._frames = []
 
     def run(self, ticks: int, with_degrees: bool = False) -> None:

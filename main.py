@@ -17,6 +17,14 @@ from simulation import Simulation
 import menu
 
 
+def open_gui_menu() -> None:
+    """ Opens the a Pygame-based GUI Menu that allows easy selection of the functionality of the
+    projects features
+    """
+    # menu.whatever_patricia_called_it()
+    pass
+
+
 def run_degrees_example() -> None:
     """ Run the example degrees risk visualization using the sample graph of people.
     """
