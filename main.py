@@ -9,7 +9,7 @@ Copyright and Usage Information
 ===============================
 This file is Copyright (c) 2021 Simon Chen, Patricia Ding, Salman Husainie, Makayla Duffus
 """
-from typing import Tuple
+from __future__ import annotations
 import visualization
 import data_processing
 import random
@@ -71,7 +71,7 @@ def run_degrees_graph_generated(n: int) -> None:
     visualization.render_degrees_apart(graph, init_infected)
 
 
-def run_simulation_no_degrees_preview(sim_conditions: Tuple[int, str, int, str]) -> None:
+def run_simulation_no_degrees_preview(sim_conditions: tuple[int, str, int, str]) -> None:
     """Run the simulation with the given conditions. This simulation does not show the degrees
     of separation between nodes.
 
@@ -90,7 +90,7 @@ def run_simulation_no_degrees_preview(sim_conditions: Tuple[int, str, int, str])
     sim.run(21)
 
 
-def run_simulation_with_degrees_preview(sim_conditions: Tuple[int, str, int, str]) -> None:
+def run_simulation_with_degrees_preview(sim_conditions: tuple[int, str, int, str]) -> None:
     """Run the simulation with the given conditions. This simulation previews the degrees
     of separation between nodes.
 

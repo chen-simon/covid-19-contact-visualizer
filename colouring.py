@@ -10,8 +10,9 @@ Copyright and Usage Information
 ===============================
 This file is Copyright (c) 2021 Simon Chen, Patricia Ding, Salman Husainie, Makayla Duffus
 """
+from __future__ import annotations
 from math import e, log
-from typing import Optional, Tuple
+from typing import Optional
 from functools import cache
 
 
@@ -24,7 +25,7 @@ OFFSET = log(MIN_FILL)  # for the degrees apart exponential curve
 
 
 @cache  # To avoid unnecessary re-calculations
-def degrees_apart_get_colour(degrees_apart: Optional[int]) -> Tuple[int, int, int]:
+def degrees_apart_get_colour(degrees_apart: Optional[int]) -> tuple[int, int, int]:
     """Given a degrees_apart attribute of a person object, return the appropriate colour of the
     person. The colour calculation is an exponential decay function.
 
@@ -47,7 +48,7 @@ def degrees_apart_get_colour(degrees_apart: Optional[int]) -> Tuple[int, int, in
 
 
 @cache
-def rgb_to_str(rgb: Tuple[int, int, int]) -> str:
+def rgb_to_str(rgb: tuple[int, int, int]) -> str:
     """Converts a colour from a tuple of ints to to a string in the form "rgb(255, 255, 255)."
 
     >>> rgb_to_str((255, 255, 255))

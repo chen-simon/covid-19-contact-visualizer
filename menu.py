@@ -13,11 +13,10 @@ Copyright and Usage Information
 ===============================
 This file is Copyright (c) 2021 Simon Chen, Patricia Ding, Salman Husainie, Makayla Duffus
 """
+from __future__ import annotations
 import math
-
 import pygame
 import pygame_gui
-from typing import List, Tuple
 from simulation import Simulation
 pygame.init()
 
@@ -119,7 +118,7 @@ def create_category_boxes(manager: pygame_gui.UIManager) -> None:
                                   html_text='Connected: ', manager=manager)
 
 
-def create_value_boxes(manager: pygame_gui.UIManager) -> Tuple[pygame_gui.elements.UITextBox,
+def create_value_boxes(manager: pygame_gui.UIManager) -> tuple[pygame_gui.elements.UITextBox,
                                                                pygame_gui.elements.UITextBox,
                                                                pygame_gui.elements.UITextBox,
                                                                pygame_gui.elements.UITextBox]:
@@ -140,7 +139,7 @@ def create_value_boxes(manager: pygame_gui.UIManager) -> Tuple[pygame_gui.elemen
     return (people_change, closeness_change, infected_change, connected_change)
 
 
-def plus_buttons(manager: pygame_gui.UIManager) -> Tuple[pygame_gui.elements.UIButton,
+def plus_buttons(manager: pygame_gui.UIManager) -> tuple[pygame_gui.elements.UIButton,
                                                          pygame_gui.elements.UIButton,
                                                          pygame_gui.elements.UIButton,
                                                          pygame_gui.elements.UIButton]:
@@ -157,7 +156,7 @@ def plus_buttons(manager: pygame_gui.UIManager) -> Tuple[pygame_gui.elements.UIB
     return (num_people_plus, closeness_plus, infected_plus, connected_plus)
 
 
-def minus_buttons(manager: pygame_gui.UIManager) -> Tuple[pygame_gui.elements.UIButton,
+def minus_buttons(manager: pygame_gui.UIManager) -> tuple[pygame_gui.elements.UIButton,
                                                           pygame_gui.elements.UIButton,
                                                           pygame_gui.elements.UIButton,
                                                           pygame_gui.elements.UIButton]:
@@ -177,7 +176,7 @@ def minus_buttons(manager: pygame_gui.UIManager) -> Tuple[pygame_gui.elements.UI
     return (num_people_minus, closeness_minus, infected_minus, connected_minus)
 
 
-def change_interval(variable_values: List[float], textbox, delta: float, dataset: int) -> None:
+def change_interval(variable_values: list[float], textbox, delta: float, dataset: int) -> None:
     """Changes the value of the variable for the selected dataset by a given delta"""
     variable_values[dataset] += delta
     if dataset == 1 or dataset == 3:

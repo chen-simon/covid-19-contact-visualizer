@@ -10,7 +10,7 @@ Copyright and Usage Information
 This file is Copyright (c) 2021 Simon Chen, Patricia Ding, Salman Husainie, Makayla Duffus
 """
 from __future__ import annotations
-from typing import Dict, Optional, Set
+from typing import Optional
 import colouring as colour
 import networkx as nx
 
@@ -41,7 +41,7 @@ class _Person:
     age: int
     severity_level: float
     infected: bool
-    neighbours: Dict[_Person, float]
+    neighbours: dict[_Person, float]
     degrees_apart: Optional[int] = None
 
     def __init__(self, identifier: str, name: str, age: int, severity_level: float) -> None:
@@ -67,7 +67,7 @@ class _Person:
         self.infected = not self.infected
 
     # DEGREE CALCULATION
-    def calculate_degrees_apart(self, curr_degree: int, visited: Set[_Person],
+    def calculate_degrees_apart(self, curr_degree: int, visited: set,
                                 init_call: bool = True) -> None:
         """Update degrees_apart for all the people this person is connected to, where degrees_apart
         is the smallest degree apart between this person and an infected person.
@@ -118,7 +118,7 @@ class Graph:
         self._people = {}
 
     # ACCESSOR METHODS
-    def get_people(self) -> Dict[str, _Person]:
+    def get_people(self) -> dict[str, _Person]:
         """Return a dictionary mapping a unique identifier to _Person object."""
         return self._people
 
@@ -130,7 +130,7 @@ class Graph:
         """Return the weight between person1 and person2"""
         return self._people[person1].neighbours[person2]
 
-    def get_names(self) -> Set[str]:
+    def get_names(self) -> set[str]:
         """Return a set containing the names of every _Person object in this graph.
         """
         names_so_far = set()

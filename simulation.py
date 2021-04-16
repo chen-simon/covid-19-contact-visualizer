@@ -9,13 +9,14 @@ Copyright and Usage Information
 ===============================
 This file is Copyright (c) 2021 Simon Chen, Patricia Ding, Salman Husainie, Makayla Duffus
 """
+from __future__ import annotations
 import random
 import networkx as nx
 import data_processing
 import visualization as vis
 from social_graph import Graph
 import plotly.graph_objects as go
-from typing import Optional, Tuple
+from typing import Optional
 
 
 class Simulation:
@@ -33,7 +34,7 @@ class Simulation:
     _init_infected: set[str]
     _num_infected: int
 
-    def __init__(self, conditions: Tuple[int, str, int, str], graph: Optional[Graph] = None):
+    def __init__(self, conditions: tuple[int, str, int, str], graph: Optional[Graph] = None):
         """Initialize the values in this simulation.
 
         - conditions[0] is the number of people in this simulation
@@ -42,10 +43,10 @@ class Simulation:
         - conditions[3] is whether the graph is connected
 
         Preconditions:
-            - 10 < sim_conditions[0] <= 60
-            - sim_conditions[1] == 'high' or sim_conditions[1] == 'medium' or sim_conditions[1] == 'low'
-            - 1 <= sim_conditions[2] <= sim_conditions[0]
-            - sim_conditions[3] == 'yes' or sim_conditions[3] == 'no'
+            - 10 < conditions[0] <= 60
+            - conditions[1] == 'high' or conditions[1] == 'medium' or conditions[1] == 'low'
+            - 1 <= conditions[2] <= conditions[0]
+            - conditions[3] == 'yes' or conditions[3] == 'no'
         """
         # for when a dataset is given
         if graph is not None:

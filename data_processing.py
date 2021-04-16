@@ -14,7 +14,6 @@ from __future__ import annotations
 import csv
 import random
 import string
-from typing import Tuple, List
 from social_graph import Graph
 
 
@@ -133,7 +132,7 @@ def generate_disconnected_graph(n: int, level: str = 'medium') -> Graph:
     return graph
 
 
-def _random_list_of_two(people: List[str]) -> List[str]:
+def _random_list_of_two(people: list[str]) -> list[str]:
     """Return a randomly generated list of two strings representing _Person identifier attributes.
 
     Preconditions:
@@ -149,7 +148,7 @@ def _random_list_of_two(people: List[str]) -> List[str]:
         return _random_list_of_two(people)
 
 
-def _generate_id_and_name(graph: Graph) -> Tuple[str, str]:
+def _generate_id_and_name(graph: Graph) -> tuple[str, str]:
     """Return a tuple containing the following strings:
         1. A 6-digit id composed of uppercase ASCII letters and numbers for a _Person object.
         2. The initials for the name attribute of a _Person object.

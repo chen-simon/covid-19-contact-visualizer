@@ -9,8 +9,8 @@ Copyright and Usage Information
 ===============================
 This file is Copyright (c) 2021 Simon Chen, Patricia Ding, Salman Husainie, Makayla Duffus
 """
-from typing import Any, Dict, List, Tuple
-
+from __future__ import annotations
+from typing import Any
 import networkx as nx
 from social_graph import Graph
 from plotly.graph_objs import Scatter, Figure
@@ -52,7 +52,7 @@ def render_degrees_apart(graph: Graph, init_infected: set[str]) -> None:
     fig.show()
 
 
-def render_simulation_frame(graph: Graph, pos: Dict[str, Any], num: int = 0,
+def render_simulation_frame(graph: Graph, pos: dict[str, Any], num: int = 0,
                             with_degrees: bool = False) -> go.Frame:
     """Return a plotly Frame given object a graph and the positions of each person and edge on the
     rendered graph.
@@ -76,7 +76,7 @@ def render_simulation_frame(graph: Graph, pos: Dict[str, Any], num: int = 0,
                                                             str(len(graph_nx.nodes))}, name=num)
 
 
-def update_slider(sliders_dict: Dict[str, Any], num: int = 0) -> None:
+def update_slider(sliders_dict: dict[str, Any], num: int = 0) -> None:
     """Updates slider_dict for the layout of plotly figure. slider_dict controls the slider on the
     plotly visualization.
     """
@@ -128,9 +128,9 @@ def render_simulation_full(frames: list[go.Frame], sliders_dict: dict, num_nodes
     fig.show()
 
 
-def create_scatters(x_edges: List[Any], y_edges: List[Any], x_values: List[Any],
-                    y_values: List[Any], colours: List[Any], labels: List[Any]) \
-        -> Tuple[go.Scatter, go.Scatter]:
+def create_scatters(x_edges: list[Any], y_edges: list[Any], x_values: list[Any],
+                    y_values: list[Any], colours: list[Any], labels: list[Any]) \
+        -> tuple[go.Scatter, go.Scatter]:
     """Create the nodes and edges through plotly for the visualization"""
 
     trace3 = Scatter(x=x_edges,
@@ -160,8 +160,8 @@ def create_scatters(x_edges: List[Any], y_edges: List[Any], x_values: List[Any],
     return (trace3, trace4)
 
 
-def determine_positions(pos: Dict[str, Any], graph_nx: nx.Graph) -> Tuple[List[Any], List[Any],
-                                                                          List[Any], List[Any]]:
+def determine_positions(pos: dict[str, Any], graph_nx: nx.Graph) -> tuple[list[Any], list[Any],
+                                                                          list[Any], list[Any]]:
     """Returns the x and y positions of the edges and nodes."""
     x_values = [pos[k][0] for k in graph_nx.nodes]
     y_values = [pos[k][1] for k in graph_nx.nodes]
