@@ -10,7 +10,7 @@ Copyright and Usage Information
 This file is Copyright (c) 2021 Simon Chen, Patricia Ding, Salman Husainie, Makayla Duffus
 """
 import networkx as nx
-from dataclasses import Graph
+from social_graph import Graph
 from plotly.graph_objs import Scatter, Figure
 import plotly.graph_objects as go
 

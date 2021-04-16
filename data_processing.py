@@ -15,7 +15,7 @@ import csv
 import random
 import string
 from typing import Tuple, List
-from dataclasses import Graph
+from social_graph import Graph
 
 
 def load_graph_csv(names_file: str, contact_file: str) -> Graph:

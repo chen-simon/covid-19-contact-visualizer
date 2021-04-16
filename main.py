@@ -74,5 +74,5 @@ def run_simulation_example_with_degrees_preview(sim_conditions: Tuple[int, str, 
     sim.run(21, with_degrees=True)
 
 
-# if __name__ == '__main__':
-    # open_gui_menu()
+if __name__ == '__main__':
+    open_gui_menu()

@@ -14,7 +14,7 @@ import networkx as nx
 import data_processing
 import dataclasses
 import visualization as vis
-from dataclasses import Graph
+from social_graph import Graph
 import plotly.graph_objects as go
 from typing import Optional, Tuple
 
