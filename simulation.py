@@ -99,8 +99,8 @@ class Simulation:
             # checking every connection where one node is infected
             for person in infected:
                 for neighbour in self._graph.get_neighbours(person):
-                    result = determine_infected(self._graph.get_weight(person, neighbour))
-
+                    result = determine_infected(self._graph.get_weight(person,
+                                                                       neighbour.identifier))
                     if result:
                         buffer_infected.add(neighbour.identifier)
 

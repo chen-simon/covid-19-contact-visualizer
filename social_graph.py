@@ -126,9 +126,17 @@ class Graph:
         """Return the neighbours of the item"""
         return list(self._people[item].neighbours)
 
-    def get_weight(self, person1: str, person2: _Person) -> float:
-        """Return the weight between person1 and person2"""
-        return self._people[person1].neighbours[person2]
+    def get_weight(self, person1: str, person2: str) -> float:
+        """Return the weight between person1 and person2
+
+        >>> graph = Graph()
+        >>> graph.add_vertex('F5H9A8', 'Bob', 60, 0.9)
+        >>> graph.add_vertex('F7H8T6', 'Jim', 60, 0.9)
+        >>> graph.add_edge('F5H9A8', 'F7H8T6', 0.69420)
+        >>> graph.get_weight('F5H9A8', 'F7H8T6')
+        0.69420
+        """
+        return self._people[person1].neighbours[self._people[person2]]
 
     def get_names(self) -> set[str]:
         """Return a set containing the names of every _Person object in this graph.
@@ -207,7 +215,6 @@ class Graph:
             person.reset_degree()  # Reset all degrees to None
 
     # NETWORKX CONVERSION METHODS
-
     def to_nx(self) -> nx.Graph:
         """Return a networkx Graph representing self."""
 
