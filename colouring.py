@@ -27,6 +27,11 @@ OFFSET = log(MIN_FILL)  # for the degrees apart exponential curve
 def degrees_apart_get_colour(degrees_apart: Optional[int]) -> Tuple[int, int, int]:
     """ Given a degrees_apart, return the appropriate colour of the person.
     The colour calculation is an exponential decay function.
+
+    >>> degrees_apart_get_colour(0)  # Based off of INFECTED_COLOUR
+    (255, 0, 0)
+    >>> degrees_apart_get_colour(2)  # Exponential decay starts
+    (255, 169, 169)
     """
     # Hard coded base case degree colours
     if degrees_apart is None:
@@ -44,5 +49,8 @@ def degrees_apart_get_colour(degrees_apart: Optional[int]) -> Tuple[int, int, in
 @cache
 def rgb_to_str(rgb: Tuple[int, int, int]) -> str:
     """ Converts a colour from a tuple of ints to to a string in the form "rgb(255, 255, 255)".
+
+    >>> rgb_to_str((255, 255, 255))
+    "rgb(255, 255, 255)"
     """
     return 'rgb({}, {}, {})'.format(rgb[0], rgb[1], rgb[2])
