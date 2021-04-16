@@ -111,8 +111,10 @@ class Graph:
         """ Initialize an empty graph."""
         self._people = {}
 
+    # ACCESSOR METHODS
+
     def get_people(self) -> Dict[str, _Person]:
-        """ Return a __ of all the people"""
+        """ Return a dictionary mapping a unique identifer to _Person object."""
         return self._people
 
     def get_neighbours(self, item: Any):
@@ -132,6 +134,18 @@ class Graph:
             names_so_far.add(self._people[person].name)
 
         return names_so_far
+
+    def get_contact_level(self, identifier1: str, identifier2: str) -> float:
+        """Return the level of contact between the given items (the weight of their edge).
+
+        Return 0 if identifier1 and identifier2 are not adjacent.
+        """
+        person1 = self._people[identifier1]
+        person2 = self._people[identifier2]
+
+        return person1.neighbours.get(person2, 0)
+
+    # MUTATION METHODS
 
     def add_vertex(self, identifier: str, name: str, age: int, severity_level: float) -> None:
         """ Add a vertex with the given identifier, name, age, and severity level to this graph.
@@ -157,16 +171,6 @@ class Graph:
 
         else:
             raise ValueError
-
-    def get_contact_level(self, identifier1: str, identifier2: str) -> float:
-        """Return the level of contact between the given items (the weight of their edge).
-
-        Return 0 if identifier1 and identifier2 are not adjacent.
-        """
-        person1 = self._people[identifier1]
-        person2 = self._people[identifier2]
-
-        return person1.neighbours.get(person2, 0)
 
     def set_infected(self, init_infected: set[str]) -> None:
         """ Sets the initial infected people for the graph, given their ids
@@ -196,7 +200,8 @@ class Graph:
         for person in self._people.values():
             person.reset_degree()  # Reset all degrees to None
 
-    # TO NETWORKX METHODS
+    # NETWORKX CONVERSION METHODS
+
     def to_nx(self) -> nx.Graph:
         """ Return a networkx Graph representing self."""
 
