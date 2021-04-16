@@ -259,3 +259,18 @@ class Graph:
                     graph_nx.add_edge(p.name, u.name)  # add edge edge between each neighbour pair
 
         return graph_nx
+
+
+if __name__ == '__main__':
+    import doctest
+    doctest.testmod()
+
+    import python_ta.contracts
+    python_ta.contracts.check_all_contracts()
+
+    import python_ta
+    python_ta.check_all(config={
+        'extra-imports': ['networkx', ''],  # the names (strs) of imported modules
+        'max-line-length': 100,
+        'disable': ['E1136']
+    })
