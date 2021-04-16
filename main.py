@@ -109,4 +109,4 @@ def run_simulation_with_degrees_preview(sim_conditions: tuple[int, str, int, str
 
 
 if __name__ == '__main__':
-    run_degrees_graph_csv('data/persons.csv', 'data/connections.csv')
+    open_gui_menu()
