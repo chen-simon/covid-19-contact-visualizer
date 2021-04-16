@@ -3,14 +3,14 @@
 Module Description
 ==================
 Social Graph Dataclasses Module
-This module contains the classes that store the contact tracing data.
+This module contains the dataclasses and their methods that represent a network of people.
 
 Copyright and Usage Information
 ===============================
 This file is Copyright (c) 2021 Simon Chen, Patricia Ding, Salman Husainie, Makayla Duffus
 """
 from __future__ import annotations
-from typing import Any, Dict, Optional
+from typing import Dict, Optional, Set
 import colouring as colour
 import networkx as nx
 
@@ -45,7 +45,7 @@ class _Person:
     degrees_apart: Optional[int] = None
 
     def __init__(self, identifier: str, name: str, age: int, severity_level: float) -> None:
-        """ Initialize a new person vertex with the given name, identifier, age, and severity level.
+        """Initialize a new person vertex with the given name, identifier, age, and severity level.
         """
         self.identifier = identifier
         self.name = name
@@ -56,15 +56,21 @@ class _Person:
 
     # BASIC METHODS
     def change_infection_status(self) -> None:
-        """ Reverses the current infection status of the person."""
+        """Reverses the current infection status of the person.
+
+        >>> p1 = _Person('F5H9A8', 'L.V', 60, 0.9)
+        >>> p1.change_infection_status()
+        >>> p1.infected
+        True
+        """
+
         self.infected = not self.infected
 
     # DEGREE CALCULATION
-    def calculate_degrees_apart(self, curr_degree: int, visited: set,
+    def calculate_degrees_apart(self, curr_degree: int, visited: Set[_Person],
                                 init_call: bool = True) -> None:
-        """ Update degrees_apart for all the people this person is connected to,
-        where degrees_apart is the smallest degree apart between this person and an infected
-        person.
+        """Update degrees_apart for all the people this person is connected to, where degrees_apart
+        is the smallest degree apart between this person and an infected person.
         """
         # This will ensure that degrees_apart is always calculating the smallest degree between
         # an infected person.
@@ -80,15 +86,15 @@ class _Person:
                 person.calculate_degrees_apart(curr_degree + 1, visited.copy(), False)
 
     def get_degree(self) -> int:
-        """ Return smallest degree apart from an infected vertex. Raise ValueError if has not
-        been calculated yet.
+        """Return smallest degree apart from an infected vertex. Raise ValueError if has not been
+        calculated yet.
         """
         if self.degrees_apart is not None:
             return self.degrees_apart
         raise ValueError
 
     def reset_degree(self, zero: Optional[bool] = False) -> None:
-        """ Resets the degrees_apart attribute to None to represent an uncalculated value.
+        """Resets the degrees_apart attribute to None to represent an uncalculated value.
         If zero is true, set it to 0 instead.
         """
         if zero:
@@ -112,21 +118,20 @@ class Graph:
         self._people = {}
 
     # ACCESSOR METHODS
-
     def get_people(self) -> Dict[str, _Person]:
-        """ Return a dictionary mapping a unique identifer to _Person object."""
+        """Return a dictionary mapping a unique identifier to _Person object."""
         return self._people
 
-    def get_neighbours(self, item: Any):
-        """ Return the neighbours of this person"""
+    def get_neighbours(self, item: str):
+        """Return the neighbours of the item"""
         return list(self._people[item].neighbours)
 
-    def get_weight(self, person1: Any, person2: Any) -> float:
-        """ Return the weight between person1 and person2"""
+    def get_weight(self, person1: str, person2: _Person) -> float:
+        """Return the weight between person1 and person2"""
         return self._people[person1].neighbours[person2]
 
-    def get_names(self) -> set[str]:
-        """ Return a set containing the names of every _Person object in this graph.
+    def get_names(self) -> Set[str]:
+        """Return a set containing the names of every _Person object in this graph.
         """
         names_so_far = set()
 
@@ -148,38 +153,39 @@ class Graph:
     # MUTATION METHODS
 
     def add_vertex(self, identifier: str, name: str, age: int, severity_level: float) -> None:
-        """ Add a vertex with the given identifier, name, age, and severity level to this graph.
+        """Add a vertex with the given identifier, name, age, and severity level to this graph.
         """
         if identifier not in self._people:
             self._people[identifier] = _Person(identifier, name, age, severity_level)
 
     def add_edge(self, identifier1: str, identifier2: str, contact_level: float) -> None:
-        """ Add an edge between two people with the given identifiers in this graph, with the given
+        """Add an edge between two people with the given identifiers in this graph, with the given
         weight, representing their level of contact.
-
-        Raise a ValueError if identifier1 or identifier2 are not vertices in this graph.
 
         Preconditions:
             - identifier1 != identifier2
         """
-        if identifier1 in self._people and identifier2 in self._people:
-            person1 = self._people[identifier1]
-            person2 = self._people[identifier2]
+        person1 = self._people[identifier1]
+        person2 = self._people[identifier2]
 
-            person1.neighbours[person2] = contact_level
-            person2.neighbours[person1] = contact_level
-
-        else:
-            raise ValueError
+        person1.neighbours[person2] = contact_level
+        person2.neighbours[person1] = contact_level
 
     def set_infected(self, init_infected: set[str]) -> None:
-        """ Sets the initial infected people for the graph, given their ids
+        """Sets the initial infected people for the graph, given their ids.
+
+        >>> graph = Graph()
+        >>> graph.add_vertex(_Person('F5H9A8', 'L.V', 60, 0.9))
+        >>> graph.add_vertex(_Person('F7H8T6', 'C.V', 60, 0.9))
+        >>> graph.set_infected({'F5H9A8'})
+        >>> graph._people['F5H9A8'].infected
+        True
         """
         for identifier in init_infected:
             self._people[identifier].infected = True
 
     def recalculate_degrees(self) -> None:
-        """ Recalculates the degrees_apart attribute for each connected person to an infected.
+        """Recalculates the degrees_apart attribute for each connected person to an infected.
         """
         self._reset_degrees()
 
@@ -203,7 +209,7 @@ class Graph:
     # NETWORKX CONVERSION METHODS
 
     def to_nx(self) -> nx.Graph:
-        """ Return a networkx Graph representing self."""
+        """Return a networkx Graph representing self."""
 
         graph_nx = nx.Graph()
         for p in self._people.values():
@@ -216,8 +222,10 @@ class Graph:
         return graph_nx
 
     def to_nx_with_degree_colour(self) -> nx.Graph:
-        """ Return a networkx Graph representing self. This function also sets an additional
+        """Return a networkx Graph representing self. This function also sets an additional
         attribute, 'colour', for each node in the networkx graph.
+
+        This function is used for just a degree graph.
         """
         graph_nx = nx.Graph()
 
@@ -233,7 +241,7 @@ class Graph:
         return graph_nx
 
     def to_nx_with_simulation_colour(self) -> nx.Graph:
-        """ Return a networkx Graph representing self. This function also sets an additional
+        """Return a networkx Graph representing self. This function also sets an additional
         attribute, 'colour', for each node in the networkx graph.
 
         This function is used for the simulations.

@@ -3,7 +3,7 @@
 Module Description
 ==================
 Colouring Module
-This module contains the functions used to calculate and update the colours for the contact
+This module contains the functions used to calculate and update the colours of the nodes for the
 visualization. Due to frequent similar calls, results are memoized using the @cache decorator.
 
 Copyright and Usage Information
@@ -25,8 +25,8 @@ OFFSET = log(MIN_FILL)  # for the degrees apart exponential curve
 
 @cache  # To avoid unnecessary re-calculations
 def degrees_apart_get_colour(degrees_apart: Optional[int]) -> Tuple[int, int, int]:
-    """ Given a degrees_apart, return the appropriate colour of the person.
-    The colour calculation is an exponential decay function.
+    """Given a degrees_apart attribute of a person object, return the appropriate colour of the
+    person. The colour calculation is an exponential decay function.
 
     >>> degrees_apart_get_colour(0)  # Based off of INFECTED_COLOUR
     (255, 0, 0)
@@ -48,7 +48,7 @@ def degrees_apart_get_colour(degrees_apart: Optional[int]) -> Tuple[int, int, in
 
 @cache
 def rgb_to_str(rgb: Tuple[int, int, int]) -> str:
-    """ Converts a colour from a tuple of ints to to a string in the form "rgb(255, 255, 255)".
+    """Converts a colour from a tuple of ints to to a string in the form "rgb(255, 255, 255)."
 
     >>> rgb_to_str((255, 255, 255))
     "rgb(255, 255, 255)"

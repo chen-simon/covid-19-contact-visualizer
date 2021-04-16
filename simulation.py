@@ -3,7 +3,7 @@
 Module Description
 ==================
 Simulation Module
-This module contains the dataclass for the simulation.
+This module contains the dataclasses and their methods needed to create the simulation.
 
 Copyright and Usage Information
 ===============================
@@ -19,12 +19,12 @@ from typing import Optional, Tuple
 
 
 class Simulation:
-    """ A simulation of the graph over time.
+    """A simulation of the spread of COVID-19 over time.
 
     Instance Attributes:
         - _graph: The graph this simulation is representing.
-        - _frames: A list of Plotly graph object frames
-            (each frame represents one week in simulation time).
+        - _frames: A list of Plotly graph object frames (each frame represents one week in
+        simulation time).
         - _init_infected: The set of initially infected people.
         - _num_infected: The number of people who are initially infected.
     """
@@ -34,16 +34,24 @@ class Simulation:
     _num_infected: int
 
     def __init__(self, conditions: Tuple[int, str, int, str], graph: Optional[Graph] = None):
-        """ Initialize the values in this simulation.
+        """Initialize the values in this simulation.
 
-            Parameter Description:
-                - conditions[0] is the number of people in this simulation
-                - conditions[1] is the level of contact between people (edge weights)
-                - conditions[2] is the number of initially infected people
-                - conditions[3] is whether the graph is connected
+        - conditions[0] is the number of people in this simulation
+        - conditions[1] is the level of contact between people (edge weights)
+        - conditions[2] is the number of initially infected people
+        - conditions[3] is whether the graph is connected
+
+        Preconditions:
+            - 10 < sim_conditions[0] <= 60
+            - sim_conditions[1] == 'high' or sim_conditions[1] == 'medium' or sim_conditions[1] == 'low'
+            - 1 <= sim_conditions[2] <= sim_conditions[0]
+            - sim_conditions[3] == 'yes' or sim_conditions[3] == 'no'
         """
+        # for when a dataset is given
         if graph is not None:
             self._graph = graph
+
+        # for when a graph needs to be generated
         elif conditions[3] == 'yes':
             self._graph = data_processing.generate_connected_graph(conditions[0], conditions[1])
         else:
@@ -53,6 +61,7 @@ class Simulation:
         self._num_infected = conditions[2]
         self._init_infected = set()
 
+        # choosing random people to be the initially infected
         people_copy = set(self._graph.get_people())
         for _ in range(0, self._num_infected):
             self._init_infected.add(people_copy.pop())
@@ -60,7 +69,7 @@ class Simulation:
         self._frames = []
 
     def run(self, ticks: int, with_degrees: bool = False) -> None:
-        """ Run the simulation for a given amount of ticks.
+        """Run the simulation for a given amount of ticks.
         """
         self._graph.set_infected(self._init_infected)
 
@@ -74,7 +83,7 @@ class Simulation:
         else:
             graph_nx = self._graph.to_nx_with_simulation_colour()
 
-        # Establishes a shared position of all notes in plotly pre-simulation
+        # Establishes a shared position of all nodes when visualizing
         pos = getattr(nx, 'spring_layout')(graph_nx)
 
         # Renders the initial state frame
@@ -107,6 +116,14 @@ class Simulation:
 
 
 def determine_infected(edge_weight: float) -> bool:
-    """ Determine if neighbour becomes infected and set the person's infected bool accordingly.
+    """Determine if a node becomes infected using the edge weight between an infected node and a
+    non-infected node
+
+    >>> result = determine_infected(1)
+    >>> result
+    True
+    >>> result = determine_infected(0.4)
+    >>> result or not result
+    True
     """
     return random.choices([True, False], weights=(edge_weight, 1-edge_weight))[0]

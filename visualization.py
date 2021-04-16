@@ -3,12 +3,14 @@
 Module Description
 ==================
 Visualization Module
-This module contains the functions used to create the COVID-19 contact visualization.
+This module contains the functions that visualize either a degree graph on its own, or a simulation.
 
 Copyright and Usage Information
 ===============================
 This file is Copyright (c) 2021 Simon Chen, Patricia Ding, Salman Husainie, Makayla Duffus
 """
+from typing import Any, Dict, List, Tuple
+
 import networkx as nx
 from social_graph import Graph
 from plotly.graph_objs import Scatter, Figure
@@ -31,47 +33,13 @@ def render_degrees_apart(graph: Graph, init_infected: set[str]) -> None:
     graph_nx = graph.to_nx_with_degree_colour()
 
     colours = [graph_nx.nodes[node]['colour'] for node in graph_nx.nodes]
-
-    # i think this generates the positions randomly for each node according to the given layout
-    # the layout is algorithm used by networkx
     pos = getattr(nx, 'spring_layout')(graph_nx)
 
     # put positions of nodes into lists
-    x_values = [pos[k][0] for k in graph_nx.nodes]
-    y_values = [pos[k][1] for k in graph_nx.nodes]
+    x_values, y_values, x_edges, y_edges = determine_positions(pos, graph_nx)
     labels = list(graph_nx.nodes)
 
-    # put positions of edges into lists
-    x_edges = []
-    y_edges = []
-    for edge in graph_nx.edges:
-        x_edges += [pos[edge[0]][0], pos[edge[1]][0], None]
-        y_edges += [pos[edge[0]][1], pos[edge[1]][1], None]
-
-    # create the edges in plotly
-    trace3 = Scatter(x=x_edges,
-                     y=y_edges,
-                     mode='lines',
-                     name='edges',
-                     line=dict(width=2,
-                               color='rgb(0, 0, 0)'),
-                     hoverinfo='none',
-                     )
-
-    # create the nodes in plotly
-    trace4 = Scatter(x=x_values,
-                     y=y_values,
-                     mode='markers',
-                     name='nodes',
-                     marker=dict(symbol='circle-dot',
-                                 size=50,
-                                 color=colours,
-                                 line=dict(width=0.5)
-                                 ),
-                     text=labels,
-                     hovertemplate='%{text}',
-                     hoverlabel={'namelength': 0}
-                     )
+    trace3, trace4 = create_scatters(x_edges, y_edges, x_values, y_values, colours, labels)
 
     # add these nodes and edges to the figure and show the graph
     data1 = [trace3, trace4]
@@ -84,9 +52,9 @@ def render_degrees_apart(graph: Graph, init_infected: set[str]) -> None:
     fig.show()
 
 
-def render_simulation_frame(graph: Graph, pos: list, num: int = 0,
+def render_simulation_frame(graph: Graph, pos: Dict[str, Any], num: int = 0,
                             with_degrees: bool = False) -> go.Frame:
-    """ Return a plotly graph object Frame given a graph and the positions of each person on the
+    """Return a plotly Frame given object a graph and the positions of each person and edge on the
     rendered graph.
     """
     if with_degrees:
@@ -97,48 +65,20 @@ def render_simulation_frame(graph: Graph, pos: list, num: int = 0,
     # create frame
     colours = [graph_nx.nodes[node]['colour'] for node in graph_nx.nodes]
     num_infected = colours.count('rgb(255, 0, 0)')
-    x_values = [pos[k][0] for k in graph_nx.nodes]
-    y_values = [pos[k][1] for k in graph_nx.nodes]
+    x_values, y_values, x_edges, y_edges = determine_positions(pos, graph_nx)
     labels = list(graph_nx.nodes)
 
     # put positions of edges into lists
-    x_edges = []
-    y_edges = []
-    for edge in graph_nx.edges:
-        x_edges += [pos[edge[0]][0], pos[edge[1]][0], None]
-        y_edges += [pos[edge[0]][1], pos[edge[1]][1], None]
-
-    # create the edges in plotly
-    trace3 = Scatter(x=x_edges,
-                     y=y_edges,
-                     mode='lines',
-                     name='edges',
-                     line=dict(width=2,
-                               color='rgb(0, 0, 0)'),
-                     hoverinfo='none',
-                     )
-
-    trace4 = Scatter(x=x_values,
-                     y=y_values,
-                     mode='markers',
-                     name='nodes',
-                     marker=dict(symbol='circle-dot',
-                                 size=50,
-                                 color=colours,
-                                 line=dict(width=0.5)
-                                 ),
-                     text=labels,
-                     hovertemplate='%{text}',
-                     hoverlabel={'namelength': 0}
-                     )
+    trace3, trace4 = create_scatters(x_edges, y_edges, x_values, y_values, colours, labels)
 
     return go.Frame(data=[trace3, trace4], layout={"title": 'Number of People Infected: '
                                                             + str(num_infected) + '/' +
                                                             str(len(graph_nx.nodes))}, name=num)
 
 
-def update_slider(sliders_dict: dict, num: int = 0) -> None:
-    """ Updates slider_dict for the layout of plotly figure.
+def update_slider(sliders_dict: Dict[str, Any], num: int = 0) -> None:
+    """Updates slider_dict for the layout of plotly figure. slider_dict controls the slider on the
+    plotly visualization.
     """
 
     slider_step = {"args": [[num], {"frame": {"duration": 700, "redraw": True},
@@ -153,7 +93,7 @@ def update_slider(sliders_dict: dict, num: int = 0) -> None:
 
 def render_simulation_full(frames: list[go.Frame], sliders_dict: dict, num_nodes: int,
                            num_init_infected: int) -> None:
-    """ Creates the entire simulation.
+    """Creates the entire simulation and outputs it for the user.
     """
     fig = Figure(data=frames[0].data,
                  layout=go.Layout(
@@ -186,3 +126,49 @@ def render_simulation_full(frames: list[go.Frame], sliders_dict: dict, num_nodes
     fig.update_yaxes(showgrid=False, zeroline=False, visible=False)
 
     fig.show()
+
+
+def create_scatters(x_edges: List[Any], y_edges: List[Any], x_values: List[Any],
+                    y_values: List[Any], colours: List[Any], labels: List[Any]) \
+        -> Tuple[go.Scatter, go.Scatter]:
+    """Create the nodes and edges through plotly for the visualization"""
+
+    trace3 = Scatter(x=x_edges,
+                     y=y_edges,
+                     mode='lines',
+                     name='edges',
+                     line=dict(width=2,
+                               color='rgb(0, 0, 0)'),
+                     hoverinfo='none',
+                     )
+
+    # create the nodes in plotly
+    trace4 = Scatter(x=x_values,
+                     y=y_values,
+                     mode='markers',
+                     name='nodes',
+                     marker=dict(symbol='circle-dot',
+                                 size=50,
+                                 color=colours,
+                                 line=dict(width=0.5)
+                                 ),
+                     text=labels,
+                     hovertemplate='%{text}',
+                     hoverlabel={'namelength': 0}
+                     )
+
+    return (trace3, trace4)
+
+
+def determine_positions(pos: Dict[str, Any], graph_nx: nx.Graph) -> Tuple[List[Any], List[Any],
+                                                                          List[Any], List[Any]]:
+    """Returns the x and y positions of the edges and nodes."""
+    x_values = [pos[k][0] for k in graph_nx.nodes]
+    y_values = [pos[k][1] for k in graph_nx.nodes]
+    x_edges = []
+    y_edges = []
+    for edge in graph_nx.edges:
+        x_edges += [pos[edge[0]][0], pos[edge[1]][0], None]
+        y_edges += [pos[edge[0]][1], pos[edge[1]][1], None]
+
+    return (x_values, y_values, x_edges, y_edges)

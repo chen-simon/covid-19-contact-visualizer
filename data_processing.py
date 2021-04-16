@@ -3,8 +3,8 @@
 Module Description
 ==================
 Data Processing Module
-This module contains the functions that extract, process, and generate data for the
-COVID-19 contact visualizer.
+This module contains the functions that load, process, and generate data to create a graph
+representing people and connections.
 
 Copyright and Usage Information
 ===============================
@@ -19,7 +19,7 @@ from social_graph import Graph
 
 
 def load_graph_csv(names_file: str, contact_file: str) -> Graph:
-    """ Return a Graph from the corresponding names_file and contact_file.
+    """Return a Graph from the corresponding names_file and contact_file.
 
     Preconditions:
         - names_file and contact_file are in .csv format
@@ -44,21 +44,19 @@ def load_graph_csv(names_file: str, contact_file: str) -> Graph:
 
     return graph
 
+
 # =========================
 # Data Generation Functions
 # =========================
-
-
 def generate_connected_graph(n: int, level: str = 'medium') -> Graph:
-    """ Return a connected Graph containing n _Person objects with
-        n + n // 5 total edges.
+    """Return a connected Graph containing n _Person objects with n + n // 5 total edges.
 
-        The level, (high, medium, low) determines the range from which the
-        weight between edges is chosen.
+    The level, (high, medium, low) determines the range from which the weight between edges is
+    chosen.
 
-        Preconditions:
-            - 10 <= n <= 60
-            - level in {'high', 'medium', 'low'}
+    Preconditions:
+        - 10 <= n <= 60
+        - level in {'high', 'medium', 'low'}
     """
     edges = n + n // 5
     people = []
@@ -102,11 +100,11 @@ def generate_connected_graph(n: int, level: str = 'medium') -> Graph:
 
 
 def generate_disconnected_graph(n: int, level: str = 'medium') -> Graph:
-    """ Return a non-connected graph of n _Person objects. The returned graph has a larger connected
+    """Return a non-connected graph of n _Person objects. The returned graph has a larger connected
      portion and a random smaller number of clusters/lone objects.
 
-     The level, (high, medium, low) determines the range from which the weight
-     between edges is chosen.
+    The level, (high, medium, low) determines the range from which the weight
+    between edges is chosen.
 
     Preconditions:
         - 10 <= n <= 60
@@ -138,9 +136,9 @@ def generate_disconnected_graph(n: int, level: str = 'medium') -> Graph:
 def _random_list_of_two(people: List[str]) -> List[str]:
     """Return a randomly generated list of two strings representing _Person identifier attributes.
 
-        Preconditions:
-            - len(people) >= 2
-            - any(x != y for x in people for y in people)
+    Preconditions:
+        - len(people) >= 2
+        - any(x != y for x in people for y in people)
     """
     person_1 = random.choice(people)
     person_2 = random.choice(people)
@@ -152,9 +150,9 @@ def _random_list_of_two(people: List[str]) -> List[str]:
 
 
 def _generate_id_and_name(graph: Graph) -> Tuple[str, str]:
-    """ Return a tuple containing the following strings:
-            1. A 6-digit id composed of uppercase ASCII letters and numbers for a _Person object.
-            2. The initials for the name attribute of a _Person object.
+    """Return a tuple containing the following strings:
+        1. A 6-digit id composed of uppercase ASCII letters and numbers for a _Person object.
+        2. The initials for the name attribute of a _Person object.
     """
     id_chars = string.ascii_uppercase + string.digits
     name_chars = string.ascii_uppercase
@@ -169,7 +167,7 @@ def _generate_id_and_name(graph: Graph) -> Tuple[str, str]:
 
 
 def get_leveled_weight(level: str) -> float:
-    """ Return a float value to represent the weight of an edge between two _Person objects
+    """Return a float value to represent the weight of an edge between two _Person objects
     according to the given level. The level, (high, medium, low) determines the range from which the
     random float value is chosen.
 
@@ -178,8 +176,8 @@ def get_leveled_weight(level: str) -> float:
         - 'medium': 0.45 <= w <= 0.6
         - 'low': 0.05 <= w <= 0.4
 
-        Preconditions:
-            - level in {'high', 'low', 'medium'}
+    Preconditions:
+        - level in {'high', 'low', 'medium'}
     """
     if level == 'high':
         weight = random.uniform(0.65, 1.0)

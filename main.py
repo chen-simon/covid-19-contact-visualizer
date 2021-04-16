@@ -3,7 +3,7 @@
 Module Description
 ==================
 Main Module
-This module contains the runner functions that create the COVID-19 Contact Tracing simulation.
+This module contains the runner functions that create the simulation.
 
 Copyright and Usage Information
 ===============================
@@ -17,26 +17,26 @@ from simulation import Simulation
 import menu
 
 
-def open_gui_menu() -> None:
-    """ Opens a Pygame-based GUI Menu that allows easy selection of the functionality of the
-    projects features.
+###########################################################
+# csv runners
+###########################################################
+def run_degrees_graph_csv(persons_dataset: str, connections_dataset: str) -> None:
+    """Run the example degrees risk visualization using the graph of people loaded from
+    a csv file. Example datasets can be found in 'data/persons.csv' and 'data/connections.csv'
     """
-    menu.run_interface()
-
-
-def run_degrees_example() -> None:
-    """ Run the example degrees risk visualization using the graph of people loaded from
-    a csv file.
-    """
-    graph = data_processing.load_graph_csv('data/persons.csv', 'data/connections.csv')
-    init_infected = {'WJ5751'}
+    graph = data_processing.load_graph_csv(persons_dataset, connections_dataset)
+    init_infected = {random.choice(list(graph.get_people()))}
 
     visualization.render_degrees_apart(graph, init_infected)
 
 
-def run_simulation_csv_example(persons_dataset: str, connections_dataset: str) -> None:
-    """ Run the example simulation using the graph of people loaded from a csv file.
-    The level of contact between the people is automatically set to 'medium'.
+def run_simulation_csv(persons_dataset: str, connections_dataset: str) -> None:
+    """Run the simulation using a graph of people loaded from the csv files. The level of contact
+    between people is automatically set to 'medium'. Example datasets can be found in
+    'data/persons.csv' and 'data/connections.csv'
+
+    Preconditions:
+        - the number of rows in persons_dataset is greater than 1
     """
     graph = data_processing.load_graph_csv(persons_dataset, connections_dataset)
 
@@ -50,25 +50,60 @@ def run_simulation_csv_example(persons_dataset: str, connections_dataset: str) -
     sim.run(10, with_degrees=True)
 
 
-def run_degrees_example_generated() -> None:
-    """ Run the example degrees risk visualization using a randomly generated graph of
-    50 people.
+###########################################################
+# data generation runners
+###########################################################
+def open_gui_menu() -> None:
+    """Opens a Pygame-based GUI Menu that allows for customization of the simulation
     """
-    graph = data_processing.generate_connected_graph(50)
-    init_infected = {random.choice(list(graph.get_people()))}
+    menu.run_interface()
 
+
+def run_degrees_graph_generated(n: int) -> None:
+    """Run the example degrees risk visualization using a randomly generated graph of n people. One
+    person is randomly chosen as the initially infected.
+
+    Preconditions:
+        - 10 < n <= 60
+    """
+    graph = data_processing.generate_connected_graph(n)
+    init_infected = {random.choice(list(graph.get_people()))}
     visualization.render_degrees_apart(graph, init_infected)
 
 
-def run_simulation_example(sim_conditions: Tuple[int, str, int, str]) -> None:
-    """ Run the example simulation using the sample graph of people.
+def run_simulation_no_degrees_preview(sim_conditions: Tuple[int, str, int, str]) -> None:
+    """Run the simulation with the given conditions. This simulation does not show the degrees
+    of separation between nodes.
+
+        - sim_conditions[0] is the number of people in this simulation
+        - sim_conditions[1] is the level of contact between people (edge weights)
+        - sim_conditions[2] is the number of initially infected people
+        - sim_conditions[3] is whether the graph is connected
+
+    Preconditions:
+        - 10 < sim_conditions[0] <= 60
+        - sim_conditions[1] == 'high' or sim_conditions[1] == 'medium' or sim_conditions[1] == 'low'
+        - 1 <= sim_conditions[2] <= sim_conditions[0]
+        - sim_conditions[3] == 'yes' or sim_conditions[3] == 'no'
     """
     sim = Simulation(sim_conditions)
-    sim.run(10)
+    sim.run(21)
 
 
-def run_simulation_example_with_degrees_preview(sim_conditions: Tuple[int, str, int, str]) -> None:
-    """ Run the example simulation using the sample graph of people, and the degree preview.
+def run_simulation_with_degrees_preview(sim_conditions: Tuple[int, str, int, str]) -> None:
+    """Run the simulation with the given conditions. This simulation previews the degrees
+    of separation between nodes.
+
+     - sim_conditions[0] is the number of people in this simulation
+        - sim_conditions[1] is the level of contact between people (edge weights)
+        - sim_conditions[2] is the number of initially infected people
+        - sim_conditions[3] is whether the graph is connected
+
+    Preconditions:
+        - 10 < sim_conditions[0] <= 60
+        - sim_conditions[1] == 'high' or sim_conditions[1] == 'medium' or sim_conditions[1] == 'low'
+        - 1 <= sim_conditions[2] <= sim_conditions[0]
+        - sim_conditions[3] == 'yes' or sim_conditions[3] == 'no'
     """
     sim = Simulation(sim_conditions)
     sim.run(21, with_degrees=True)
