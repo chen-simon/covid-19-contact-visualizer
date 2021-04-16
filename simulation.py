@@ -12,7 +12,6 @@ This file is Copyright (c) 2021 Simon Chen, Patricia Ding, Salman Husainie, Maka
 import random
 import networkx as nx
 import data_processing
-import dataclasses
 import visualization as vis
 from social_graph import Graph
 import plotly.graph_objects as go
@@ -29,7 +28,7 @@ class Simulation:
         - _init_infected: The set of initially infected people.
         - _num_infected: The number of people who are initially infected.
     """
-    _graph: dataclasses.Graph
+    _graph: Graph
     _frames: list[go.Frame]
     _init_infected: set[str]
     _num_infected: int

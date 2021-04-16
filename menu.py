@@ -6,6 +6,9 @@ Interface Module
 This module contains the functions that are needed to for the interface. The gui allows the user to
 adjust the variables for the prediction, then generate the graph.
 
+This module is a modified version of the Endangered Species Predictor's interface from Simon,
+Makayla, and Patricia's CSC110 Final Project.
+
 Copyright and Usage Information
 ===============================
 This file is Copyright (c) 2021 Simon Chen, Patricia Ding, Salman Husainie, Makayla Duffus
@@ -24,7 +27,7 @@ def run_interface() -> None:
     window_surface = pygame.display.set_mode((355, 365))
 
     background = pygame.Surface((355, 365))
-    background.fill(pygame.Color('#CCCCCC'))
+    background.fill(pygame.Color('#FFFFFF'))
 
     manager = pygame_gui.UIManager((355, 365))
 
