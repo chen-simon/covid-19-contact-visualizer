@@ -13,6 +13,8 @@ Copyright and Usage Information
 ===============================
 This file is Copyright (c) 2021 Simon Chen, Patricia Ding, Salman Husainie, Makayla Duffus
 """
+import math
+
 import pygame
 import pygame_gui
 from typing import List
@@ -103,7 +105,8 @@ def run_interface() -> None:
                     if event.ui_element == num_people_plus and variable_values[0] < 60:
                         change_interval(variable_values, people_change, 10, 0)
 
-                    elif event.ui_element == num_people_minus and variable_values[0] > 10:
+                    elif event.ui_element == num_people_minus and variable_values[0] > 10 and \
+                            variable_values[0] > int(math.ceil(variable_values[2] / 10) * 10):
                         change_interval(variable_values, people_change, -10, 0)
 
                     elif event.ui_element == closeness_plus and variable_values[1] < 2:
@@ -127,6 +130,7 @@ def run_interface() -> None:
 
                     # Generate Button
                     elif event.ui_element == start_button:
+                        print(variable_values[0], variable_values[2])
                         sim = Simulation((variable_values[0],
                                           determine_step(1, variable_values[1]),
                                           variable_values[2],

@@ -52,8 +52,10 @@ class Simulation:
         # Setting the initially infected people
         self._num_infected = conditions[2]
         self._init_infected = set()
+
+        people_copy = set(self._graph.get_people())
         for _ in range(0, self._num_infected):
-            self._init_infected.add(random.choice(list(self._graph.get_people())))
+            self._init_infected.add(people_copy.pop())
 
         self._frames = []
 
@@ -100,7 +102,8 @@ class Simulation:
             self._frames.append(vis.render_simulation_frame(self._graph, pos, i, with_degrees))
             vis.update_slider(sliders_dict, i)
 
-        vis.render_simulation_full(self._frames, sliders_dict, len(graph_nx.nodes))
+        vis.render_simulation_full(self._frames, sliders_dict, len(graph_nx.nodes),
+                                   len(self._init_infected))
 
 
 def determine_infected(edge_weight: float) -> bool:

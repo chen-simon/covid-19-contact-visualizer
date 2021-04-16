@@ -151,14 +151,16 @@ def update_slider(sliders_dict: dict, num: int = 0) -> None:
     sliders_dict["steps"].append(slider_step)
 
 
-def render_simulation_full(frames: list[go.Frame], sliders_dict: dict, num_nodes: int) -> None:
+def render_simulation_full(frames: list[go.Frame], sliders_dict: dict, num_nodes: int,
+                           num_init_infected: int) -> None:
     """ Creates the entire simulation.
     """
     fig = Figure(data=frames[0].data,
                  layout=go.Layout(
                      xaxis=dict(range=[0, 5], autorange=True),
                      yaxis=dict(range=[0, 5], autorange=True),
-                     title='Number of People Infected: 1/' + str(num_nodes),
+                     title='Number of People Infected: ' + str(num_init_infected) + '/' +
+                           str(num_nodes),
                      updatemenus=[dict(
                          type="buttons",
                          buttons=[dict(label="Play",
