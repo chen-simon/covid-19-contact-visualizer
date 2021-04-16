@@ -14,6 +14,7 @@ Copyright and Usage Information
 This file is Copyright (c) 2021 Simon Chen, Patricia Ding, Salman Husainie, Makayla Duffus
 """
 import math
+from typing import Optional
 import pygame
 import pygame_gui
 from simulation import Simulation
@@ -49,6 +50,7 @@ def run_interface() -> None:
     while is_running:
         time_delta = clock.tick(60) / 1000.0
         for event in pygame.event.get():
+
             if event.type == pygame.QUIT:
                 exit()
 
@@ -88,7 +90,6 @@ def run_interface() -> None:
                                           variable_values[2],
                                           determine_step(3, variable_values[3])))
                         sim.run(21, with_degrees=True)
-
             manager.process_events(event)
 
         manager.update(time_delta)
@@ -175,10 +176,12 @@ def minus_buttons(manager: pygame_gui.UIManager) -> tuple[pygame_gui.elements.UI
     return (num_people_minus, closeness_minus, infected_minus, connected_minus)
 
 
-def change_interval(variable_values: list[float], textbox, delta: float, dataset: int) -> None:
+def change_interval(variable_values: list[float],
+                    textbox: pygame_gui.elements.ui_text_box.UITextBox,
+                    delta: float, dataset: int) -> None:
     """Changes the value of the variable for the selected dataset by a given delta"""
     variable_values[dataset] += delta
-    if dataset == 1 or dataset == 3:
+    if dataset in (1, 3):
         textbox.html_text = determine_step(dataset, int(variable_values[dataset]))
 
     else:
@@ -188,7 +191,7 @@ def change_interval(variable_values: list[float], textbox, delta: float, dataset
     textbox.rebuild()
 
 
-def determine_step(dataset: int, variable_value: int) -> str:
+def determine_step(dataset: int, variable_value: int) -> Optional[str]:
     """Determine which step to display on the menu based on the given dataset.
 
     Preconditions:
@@ -212,6 +215,8 @@ def determine_step(dataset: int, variable_value: int) -> str:
         else:
             return 'yes'
 
+    return None
+
 
 if __name__ == '__main__':
     import doctest
@@ -224,5 +229,5 @@ if __name__ == '__main__':
     python_ta.check_all(config={
         'extra-imports': ['math', 'pygame', 'pygame_gui', 'simulation'],
         'max-line-length': 100,
-        'disable': ['E1136', 'E1101']
+        'disable': ['E1136', 'R0914', 'R1702', 'R0912', 'E1101']
     })
