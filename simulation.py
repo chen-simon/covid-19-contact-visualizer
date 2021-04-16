@@ -99,11 +99,7 @@ class Simulation:
             buffer_infected = set()
             # checking every connection where one node is infected
             for person in infected:
-                for neighbour in self._graph.get_neighbours(person):
-                    result = determine_infected(self._graph.get_weight(person,
-                                                                       neighbour.identifier))
-                    if result:
-                        buffer_infected.add(neighbour.identifier)
+                self.infect_neighbours(person, buffer_infected)
 
             if with_degrees:
                 self._graph.recalculate_degrees()
@@ -114,6 +110,14 @@ class Simulation:
 
         vis.render_simulation_full(self._frames, sliders_dict, len(graph_nx.nodes),
                                    len(self._init_infected))
+
+    def infect_neighbours(self, person: str, buffer_infected: set) -> None:
+        """Loops through all the neighbours of this person object to determine if they will become
+        infected. If the neighbour becomes infected, they are added to buffer_infected. """
+        for neighbour in self._graph.get_neighbours(person):
+            result = determine_infected(self._graph.get_weight(person, neighbour.identifier))
+            if result:
+                buffer_infected.add(neighbour.identifier)
 
 
 def determine_infected(edge_weight: float) -> bool:
@@ -139,7 +143,8 @@ if __name__ == '__main__':
 
     import python_ta
     python_ta.check_all(config={
-        'extra-imports': ['networkx', 'functools', 'math'],  # the names (strs) of imported modules
+        'extra-imports': ['random', 'networkx', 'plotly.graph_objects', 'data_processing',
+                          'visualization', 'social_graph'],
         'max-line-length': 100,
         'disable': ['E1136']
     })
