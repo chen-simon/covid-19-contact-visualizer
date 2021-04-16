@@ -4,7 +4,7 @@ Module Description
 ==================
 Colouring Module
 This module contains the functions used to calculate and update the colours for the contact
-visualization.
+visualization. Due to frequent similar calls, results are memoized using the @cache decorator.
 
 Copyright and Usage Information
 ===============================
@@ -42,6 +42,7 @@ def degrees_apart_get_colour(degrees_apart: Optional[int]) -> Tuple[int, int, in
             int(INFECTED_COLOUR[2] + ((255 - INFECTED_COLOUR[2]) * percent_fill)))
 
 
+@cache
 def rgb_to_str(rgb: Tuple[int, int, int]) -> str:
     """ Converts a colour from a tuple of ints to to a string in the form "rgb(255, 255, 255)".
     """
