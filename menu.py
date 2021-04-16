@@ -17,12 +17,12 @@ import math
 import pygame
 import pygame_gui
 from simulation import Simulation
-pygame.init()
 
 
 def run_interface() -> None:
     """Runs the menu that allows the user to adjust the simulation conditions.
     """
+    pygame.init()
     pygame.display.set_caption('Simulation Conditions')
     window_surface = pygame.display.set_mode((355, 365))
 

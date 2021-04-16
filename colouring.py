@@ -51,6 +51,21 @@ def rgb_to_str(rgb: tuple[int, int, int]) -> str:
     """Converts a colour from a tuple of ints to to a string in the form "rgb(255, 255, 255)."
 
     >>> rgb_to_str((255, 255, 255))
-    "rgb(255, 255, 255)"
+    'rgb(255, 255, 255)'
     """
     return 'rgb({}, {}, {})'.format(rgb[0], rgb[1], rgb[2])
+
+
+if __name__ == '__main__':
+    import doctest
+    doctest.testmod()
+
+    import python_ta.contracts
+    python_ta.contracts.check_all_contracts()
+
+    import python_ta
+    python_ta.check_all(config={
+        'extra-imports': ['networkx', 'functools', 'math'],  # the names (strs) of imported modules
+        'max-line-length': 100,
+        'disable': ['E1136']
+    })

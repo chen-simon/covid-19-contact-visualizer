@@ -11,8 +11,8 @@ This file is Copyright (c) 2021 Simon Chen, Patricia Ding, Salman Husainie, Maka
 """
 from __future__ import annotations
 from typing import Optional
-import colouring as colour
 import networkx as nx
+import colouring as colour
 
 
 class _Person:
@@ -122,7 +122,7 @@ class Graph:
         """Return a dictionary mapping a unique identifier to _Person object."""
         return self._people
 
-    def get_neighbours(self, item: str):
+    def get_neighbours(self, item: str) -> list[_Person]:
         """Return the neighbours of the item"""
         return list(self._people[item].neighbours)
 
@@ -132,9 +132,9 @@ class Graph:
         >>> graph = Graph()
         >>> graph.add_vertex('F5H9A8', 'Bob', 60, 0.9)
         >>> graph.add_vertex('F7H8T6', 'Jim', 60, 0.9)
-        >>> graph.add_edge('F5H9A8', 'F7H8T6', 0.69420)
+        >>> graph.add_edge('F5H9A8', 'F7H8T6', 0.42069)
         >>> graph.get_weight('F5H9A8', 'F7H8T6')
-        0.69420
+        0.42069
         """
         return self._people[person1].neighbours[self._people[person2]]
 
@@ -183,8 +183,8 @@ class Graph:
         """Sets the initial infected people for the graph, given their ids.
 
         >>> graph = Graph()
-        >>> graph.add_vertex(_Person('F5H9A8', 'L.V', 60, 0.9))
-        >>> graph.add_vertex(_Person('F7H8T6', 'C.V', 60, 0.9))
+        >>> graph.add_vertex('F5H9A8', 'L.V', 60, 0.9)
+        >>> graph.add_vertex('F7H8T6', 'C.V', 60, 0.9)
         >>> graph.set_infected({'F5H9A8'})
         >>> graph._people['F5H9A8'].infected
         True
@@ -277,7 +277,7 @@ if __name__ == '__main__':
 
     import python_ta
     python_ta.check_all(config={
-        'extra-imports': ['networkx', ''],  # the names (strs) of imported modules
+        'extra-imports': ['networkx', 'colouring'],  # the names (strs) of imported modules
         'max-line-length': 100,
         'disable': ['E1136']
     })

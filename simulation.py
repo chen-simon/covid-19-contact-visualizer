@@ -9,13 +9,13 @@ Copyright and Usage Information
 ===============================
 This file is Copyright (c) 2021 Simon Chen, Patricia Ding, Salman Husainie, Makayla Duffus
 """
+from typing import Optional
 import random
 import networkx as nx
+import plotly.graph_objects as go
 import data_processing
 import visualization as vis
 from social_graph import Graph
-import plotly.graph_objects as go
-from typing import Optional
 
 
 class Simulation:
@@ -33,7 +33,8 @@ class Simulation:
     _init_infected: set[str]
     _num_infected: int
 
-    def __init__(self, conditions: tuple[int, str, int, str], graph: Optional[Graph] = None):
+    def __init__(self, conditions: tuple[int, str, int, str],
+                 graph: Optional[Graph] = None) -> None:
         """Initialize the values in this simulation.
 
         - conditions[0] is the number of people in this simulation
@@ -126,4 +127,19 @@ def determine_infected(edge_weight: float) -> bool:
     >>> result or not result
     True
     """
-    return random.choices([True, False], weights=(edge_weight, 1-edge_weight))[0]
+    return random.choices([True, False], weights=(edge_weight, 1 - edge_weight))[0]
+
+
+if __name__ == '__main__':
+    import doctest
+    doctest.testmod()
+
+    import python_ta.contracts
+    python_ta.contracts.check_all_contracts()
+
+    import python_ta
+    python_ta.check_all(config={
+        'extra-imports': ['networkx', 'functools', 'math'],  # the names (strs) of imported modules
+        'max-line-length': 100,
+        'disable': ['E1136']
+    })

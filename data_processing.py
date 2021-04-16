@@ -155,8 +155,8 @@ def _generate_id_and_name(graph: Graph) -> tuple[str, str]:
     """
     id_chars = string.ascii_uppercase + string.digits
     name_chars = string.ascii_uppercase
-    id_and_name = (''.join(random.choice(id_chars) for _ in range(6)), random.choice(name_chars) +
-                   '. ' + random.choice(name_chars))
+    id_and_name = (''.join(random.choice(id_chars) for _ in range(6)), random.choice(name_chars)
+                   + '. ' + random.choice(name_chars))
 
     if id_and_name[1] in graph.get_names():
         # If the name is already present in the graph, run the function again
@@ -186,3 +186,19 @@ def get_leveled_weight(level: str) -> float:
         weight = random.uniform(0.05, 0.4)
 
     return weight
+
+
+if __name__ == '__main__':
+    import doctest
+    doctest.testmod()
+
+    import python_ta.contracts
+    python_ta.contracts.check_all_contracts()
+
+    import python_ta
+    python_ta.check_all(config={
+        'extra-imports': ['csv', 'networkx', 'string', 'random', 'social_graph'],
+        'max-line-length': 100,
+        'allowed-io': ['load_graph_csv'],
+        'disable': ['E1136']
+    })
