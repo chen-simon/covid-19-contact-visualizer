@@ -10,8 +10,7 @@ Copyright and Usage Information
 ===============================
 This file is Copyright (c) 2021 Simon Chen, Patricia Ding, Salman Husainie, Makayla Duffus
 """
-import math
-from math import e
+from math import e, log
 from typing import Optional, Tuple
 from functools import cache
 
@@ -21,7 +20,7 @@ INFECTED_COLOUR = (255, 0, 0)
 
 MIN_FILL = 0.95
 STRETCH = 0.6
-OFFSET = math.log(MIN_FILL)  # for the degrees apart exponential curve
+OFFSET = log(MIN_FILL)  # for the degrees apart exponential curve
 
 
 @cache  # To avoid unnecessary re-calculations
