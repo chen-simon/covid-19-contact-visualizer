@@ -130,7 +130,6 @@ def run_interface() -> None:
 
                     # Generate Button
                     elif event.ui_element == start_button:
-                        print(variable_values[0], variable_values[2])
                         sim = Simulation((variable_values[0],
                                           determine_step(1, variable_values[1]),
                                           variable_values[2],
