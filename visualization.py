@@ -9,11 +9,11 @@ Copyright and Usage Information
 ===============================
 This file is Copyright (c) 2021 Simon Chen, Patricia Ding, Salman Husainie, Makayla Duffus
 """
-from typing import Any
+from typing import Any, Tuple
 import networkx as nx
-from social_graph import Graph
 from plotly.graph_objs import Scatter, Figure
 import plotly.graph_objects as go
+from social_graph import Graph
 
 
 # Degrees visualization
@@ -38,7 +38,7 @@ def render_degrees_apart(graph: Graph, init_infected: set[str]) -> None:
     x_values, y_values, x_edges, y_edges = determine_positions(pos, graph_nx)
     labels = list(graph_nx.nodes)
 
-    trace3, trace4 = create_scatters(x_edges, y_edges, x_values, y_values, colours, labels)
+    trace3, trace4 = create_scatters((x_edges, y_edges), (x_values, y_values), colours, labels)
 
     # add these nodes and edges to the figure and show the graph
     data1 = [trace3, trace4]
@@ -68,11 +68,11 @@ def render_simulation_frame(graph: Graph, pos: dict[str, Any], num: int = 0,
     labels = list(graph_nx.nodes)
 
     # put positions of edges into lists
-    trace3, trace4 = create_scatters(x_edges, y_edges, x_values, y_values, colours, labels)
+    trace3, trace4 = create_scatters((x_edges, y_edges), (x_values, y_values), colours, labels)
 
     return go.Frame(data=[trace3, trace4], layout={"title": 'Number of People Infected: '
-                                                            + str(num_infected) + '/' +
-                                                            str(len(graph_nx.nodes))}, name=num)
+                                                            + str(num_infected) + '/'
+                                                            + str(len(graph_nx.nodes))}, name=num)
 
 
 def update_slider(sliders_dict: dict[str, Any], num: int = 0) -> None:
@@ -98,8 +98,8 @@ def render_simulation_full(frames: list[go.Frame], sliders_dict: dict, num_nodes
                  layout=go.Layout(
                      xaxis=dict(range=[0, 5], autorange=True),
                      yaxis=dict(range=[0, 5], autorange=True),
-                     title='Number of People Infected: ' + str(num_init_infected) + '/' +
-                           str(num_nodes),
+                     title='Number of People Infected: ' + str(num_init_infected) + '/'
+                     + str(num_nodes),
                      updatemenus=[dict(
                          type="buttons",
                          buttons=[dict(label="Play",
@@ -113,12 +113,8 @@ def render_simulation_full(frames: list[go.Frame], sliders_dict: dict, num_nodes
                                                       "mode": "immediate",
                                                       "transition": {"duration": 0}}])
                                   ])],
-                     sliders=[sliders_dict],
-
-                 ),
-
-                 frames=frames
-                 )
+                     sliders=[sliders_dict]),
+                 frames=frames)
 
     fig.update_layout({'showlegend': False})
     fig.update_xaxes(showgrid=False, zeroline=False, visible=False)
@@ -127,13 +123,12 @@ def render_simulation_full(frames: list[go.Frame], sliders_dict: dict, num_nodes
     fig.show()
 
 
-def create_scatters(x_edges: list[Any], y_edges: list[Any], x_values: list[Any],
-                    y_values: list[Any], colours: list[Any], labels: list[Any]) \
-        -> tuple[go.Scatter, go.Scatter]:
+def create_scatters(edges: Tuple[list[Any], list[Any]], values: Tuple[list[Any], list[Any]],
+                    colours: list[Any], labels: list[Any]) -> tuple[go.Scatter, go.Scatter]:
     """Create the nodes and edges through plotly for the visualization"""
 
-    trace3 = Scatter(x=x_edges,
-                     y=y_edges,
+    trace3 = Scatter(x=edges[0],
+                     y=edges[1],
                      mode='lines',
                      name='edges',
                      line=dict(width=2,
@@ -142,8 +137,8 @@ def create_scatters(x_edges: list[Any], y_edges: list[Any], x_values: list[Any],
                      )
 
     # create the nodes in plotly
-    trace4 = Scatter(x=x_values,
-                     y=y_values,
+    trace4 = Scatter(x=values[0],
+                     y=values[1],
                      mode='markers',
                      name='nodes',
                      marker=dict(symbol='circle-dot',
@@ -156,7 +151,7 @@ def create_scatters(x_edges: list[Any], y_edges: list[Any], x_values: list[Any],
                      hoverlabel={'namelength': 0}
                      )
 
-    return (trace3, trace4)
+    return trace3, trace4
 
 
 def determine_positions(pos: dict[str, Any], graph_nx: nx.Graph) -> tuple[list[Any], list[Any],
@@ -170,4 +165,22 @@ def determine_positions(pos: dict[str, Any], graph_nx: nx.Graph) -> tuple[list[A
         x_edges += [pos[edge[0]][0], pos[edge[1]][0], None]
         y_edges += [pos[edge[0]][1], pos[edge[1]][1], None]
 
-    return (x_values, y_values, x_edges, y_edges)
+    return x_values, y_values, x_edges, y_edges
+
+
+if __name__ == '__main__':
+    import doctest
+
+    doctest.testmod()
+
+    import python_ta.contracts
+
+    python_ta.contracts.check_all_contracts()
+
+    import python_ta
+
+    python_ta.check_all(config={
+        'extra-imports': ['networkx', 'social_graph', 'plotly.graph_objs', 'plotly.graph_objects'],
+        'max-line-length': 100,
+        'disable': ['E1136']
+    })
