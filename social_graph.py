@@ -2,7 +2,7 @@
 
 Module Description
 ==================
-Person and Graph Dataclasses Module
+Person and Graph Social Graph Module
 This module contains the classes that store the contact tracing data.
 
 Copyright and Usage Information
