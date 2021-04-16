@@ -196,6 +196,7 @@ class Graph:
         for person in self._people.values():
             person.reset_degree()  # Reset all degrees to None
 
+    # TO NETWORKX METHODS
     def to_nx(self) -> nx.Graph:
         """ Return a networkx Graph representing self."""
 
