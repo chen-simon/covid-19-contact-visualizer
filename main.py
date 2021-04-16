@@ -58,7 +58,7 @@ def open_gui_menu() -> None:
     menu.run_interface()
 
 
-def run_degrees_graph_generated(n: int) -> None:
+def run_degrees_graph_generated(n: int = 50) -> None:
     """Run the example degrees risk visualization using a randomly generated graph of n people. One
     person is randomly chosen as the initially infected.
 
@@ -70,10 +70,12 @@ def run_degrees_graph_generated(n: int) -> None:
     visualization.render_degrees_apart(graph, init_infected)
 
 
-def run_simulation_no_degrees_preview(sim_conditions: tuple[int, str, int, str]) -> None:
+def run_simulation_no_degrees_preview(
+        sim_conditions: tuple[int, str, int, str] = (50, 'medium', 1, 'yes')) -> None:
     """Run the simulation with the given conditions. This simulation does not show the degrees
     of separation between nodes.
 
+    Parameter Descriptions:
         - sim_conditions[0] is the number of people in this simulation
         - sim_conditions[1] is the level of contact between people (edge weights)
         - sim_conditions[2] is the number of initially infected people
@@ -89,11 +91,13 @@ def run_simulation_no_degrees_preview(sim_conditions: tuple[int, str, int, str])
     sim.run(21)
 
 
-def run_simulation_with_degrees_preview(sim_conditions: tuple[int, str, int, str]) -> None:
+def run_simulation_with_degrees_preview(
+        sim_conditions: tuple[int, str, int, str] = (50, 'medium', 1, 'yes')) -> None:
     """Run the simulation with the given conditions. This simulation previews the degrees
     of separation between nodes.
 
-     - sim_conditions[0] is the number of people in this simulation
+    Parameter Descriptions:
+        - sim_conditions[0] is the number of people in this simulation
         - sim_conditions[1] is the level of contact between people (edge weights)
         - sim_conditions[2] is the number of initially infected people
         - sim_conditions[3] is whether the graph is connected
@@ -107,6 +111,6 @@ def run_simulation_with_degrees_preview(sim_conditions: tuple[int, str, int, str
     sim = Simulation(sim_conditions)
     sim.run(21, with_degrees=True)
 
-
+# Comment out this code-block when wanting to use other runner functions
 if __name__ == '__main__':
     open_gui_menu()
