@@ -57,7 +57,7 @@ def generate_connected_graph(n: int, level: str = 'medium') -> Graph:
         weight between edges is chosen.
 
         Preconditions:
-            - 5 <= n <= 100
+            - 10 <= n <= 60
             - level in {'high', 'medium', 'low'}
     """
     edges = n + n // 5
@@ -109,7 +109,7 @@ def generate_disconnected_graph(n: int, level: str = 'medium') -> Graph:
      between edges is chosen.
 
     Preconditions:
-        - 5 <= n <= 100
+        - 10 <= n <= 60
         - level in {'high', 'low', 'medium'}
     """
     num_of_disconnected = n // 5
