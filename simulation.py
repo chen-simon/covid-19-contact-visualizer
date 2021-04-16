@@ -9,7 +9,6 @@ Copyright and Usage Information
 ===============================
 This file is Copyright (c) 2021 Simon Chen, Patricia Ding, Salman Husainie, Makayla Duffus
 """
-from __future__ import annotations
 import random
 import networkx as nx
 import data_processing

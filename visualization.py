@@ -9,7 +9,6 @@ Copyright and Usage Information
 ===============================
 This file is Copyright (c) 2021 Simon Chen, Patricia Ding, Salman Husainie, Makayla Duffus
 """
-from __future__ import annotations
 from typing import Any
 import networkx as nx
 from social_graph import Graph

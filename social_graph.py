@@ -111,7 +111,7 @@ class Graph:
     #     - _people:
     #         A collection of the people in this graph.
     #         Maps person identifier to _Person object.
-    _people: Dict[str, _Person]
+    _people: dict[str, _Person]
 
     def __init__(self) -> None:
         """ Initialize an empty graph."""

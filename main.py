@@ -9,7 +9,6 @@ Copyright and Usage Information
 ===============================
 This file is Copyright (c) 2021 Simon Chen, Patricia Ding, Salman Husainie, Makayla Duffus
 """
-from __future__ import annotations
 import visualization
 import data_processing
 import random
@@ -110,4 +109,4 @@ def run_simulation_with_degrees_preview(sim_conditions: tuple[int, str, int, str
 
 
 if __name__ == '__main__':
-    open_gui_menu()
+    run_degrees_graph_csv('data/persons.csv', 'data/connections.csv')
