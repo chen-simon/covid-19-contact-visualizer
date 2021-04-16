@@ -111,6 +111,7 @@ def run_simulation_with_degrees_preview(
     sim = Simulation(sim_conditions)
     sim.run(21, with_degrees=True)
 
+
 # Comment out this code-block when wanting to use other runner functions
 if __name__ == '__main__':
     open_gui_menu()
